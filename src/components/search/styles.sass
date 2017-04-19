@@ -1,5 +1,7 @@
 .search-wrapper
   position: absolute
+  display: flex
+  align-items: center
   top: 7px
   left: 7px
   width: 386px
@@ -8,5 +10,49 @@
   border-radius: 2px
   box-shadow: 0 1px 2px rgba(0,0,0,0.2)
 
+  form
+    flex-grow: 1
+    z-index: 10
+    display: flex
+    align-items: center
+
   @media screen and (max-width: 751px)
     width: calc(100% - 14px)
+
+
+.search-holder
+  position: absolute
+  color: #BFBFBF
+  left: 56px
+  z-index: 0
+
+.search-button
+  cursor: pointer
+  display: block
+  border: none
+  outline: none
+  width: 24px
+  height: 24px
+  background-color: transparent
+  padding: 0 14px 0 15px
+  box-sizing: content-box
+  i
+    display: block
+    color: #666666
+    width: 24px
+
+
+.search-button-right
+  @extend .search-button
+  padding: 0 12px 0 14px
+
+#search-input
+  flex-grow: 1
+  border: none
+  outline: none
+  font-size: 16px
+  line-height: 24px
+  font-weight: 300
+  color: #212121
+  background-color: transparent
+  text-overflow: ellipsis

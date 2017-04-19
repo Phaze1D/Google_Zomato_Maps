@@ -1,3 +1,21 @@
 <div class="search-wrapper">
+  <button class="search-button" type="button">
+    <i class="material-icons">menu</i>
+  </button>
 
+  <div class="search-holder" data-bind="visible: showHolder()">
+    Search Google Maps
+  </div>
+
+  <form data-bind="submit: handleSubmit">
+    <input id="search-input" type="text" name="" value="" autocomplete="off"
+           data-bind="event: {focusin: handleFocus, focusout: handleFocus}">
+    <button class="search-button-right" type="submit" data-bind="visible: !showHolder() && !showClear()">
+      <i class="material-icons">arrow_forward</i>
+    </button>
+
+    <button class="search-button-right" type="reset" data-bind="{event: {mousedown: handleReset}, visible: !showHolder() && showClear()}">
+      <i class="material-icons">clear</i>
+    </button>
+  </form>
 </div>
