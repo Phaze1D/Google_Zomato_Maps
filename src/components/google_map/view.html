@@ -1,0 +1,8 @@
+<div class="map-wrapper">
+  <spinner data-bind="visible: !showMap()" params="width: 50, strokeWidth: 4"></spinner>
+
+  <section data-bind="visible: showMap()">
+    <div id="google-map"></div>
+    <search-input></search-input>
+  </section>
+</div>
