@@ -19,23 +19,24 @@ class GoogleMapController {
   }
 
   getUserLocation(google){
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition((position) => {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        this.initMap(google, pos)
-
-      }, () => {
-        this.handleError();
-        this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
-      });
-
-    }else{
-      this.handleError();
-      this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    }
+    this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
+    // if(navigator.geolocation){
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     var pos = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     };
+    //     this.initMap(google, pos)
+    //
+    //   }, () => {
+    //     this.handleError();
+    //     this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
+    //   });
+    //
+    // }else{
+    //   this.handleError();
+    //   this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
+    // }
   }
 
   initMap(google, pos){
