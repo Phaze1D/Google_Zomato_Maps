@@ -1,0 +1,54 @@
+.autocomplete-wrapper
+  position: absolute
+  top: 48px
+  left: 0px
+  width: 386px
+  max-height: 296px
+  border-radius: 2px
+  background-color: white
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2)
+  border-top: 1px solid #D9D9D9
+
+
+.autocomplete-item
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 59px
+
+  i
+    padding: 0 16px
+    color: #BDBDBD
+
+  h6
+    margin: 0
+
+  &:hover
+    background-color: #FAFAFA
+
+  &:active
+    background-color: #F5F5F5
+
+  &:last-child
+    .autocomplete-info
+      border: none
+
+
+.autocomplete-info
+  flex-grow: 1
+  display: flex
+  flex-direction: column
+  justify-content: center
+  border-bottom: 1px solid #D9D9D9
+  height: 100%
+
+  h6
+    font-weight: 400
+    color: #212121
+    font-size: 16px
+    line-height: 20px
+
+  span
+    color: #757575
+    font-size: 14px
+    line-height: 20px
