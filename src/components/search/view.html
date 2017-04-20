@@ -9,7 +9,7 @@
 
   <form data-bind="submit: handleSubmit">
     <input id="search-input" type="text" name="" value="" autocomplete="off"
-           data-bind="event: {focusin: handleFocus, focusout: handleFocus}">
+           data-bind="event: {focusin: handleFocusIn, focusout: handleFocusOut, change: handleOnChange}">
     <button class="search-button-right" type="submit" data-bind="visible: !showHolder() && !showClear()">
       <i class="material-icons">arrow_forward</i>
     </button>
@@ -18,4 +18,6 @@
       <i class="material-icons">clear</i>
     </button>
   </form>
+  <autocomplete params="onRequestItem: onItemCallback" data-bind="visible: showAuto()">
+  </autocomplete>
 </div>
