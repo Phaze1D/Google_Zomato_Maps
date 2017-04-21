@@ -1,13 +1,49 @@
-.results-wrapper
-  position: absolute
-  top: 0
-  left: 0
-  height: 100vh
-  width: 400px
-  box-shadow: 0 0 8px rgba(0,0,0,0.3)
-  background-color: white
-
-
 .results-top
   height: 62px
   background-color: #4285F4
+
+.results-list
+  overflow-y: scroll
+  overflow-x: hidden
+  max-height: calc(100% - 62px)
+
+.results-item
+  display: flex
+  cursor: pointer
+  padding: 10px 19px
+  border-bottom: 1px solid #E6E6E6
+
+  &:hover
+    background-color: #FAFAFA
+
+  img
+    width: 80px
+    height: 80px
+    flex-shrink: 0
+    margin-left: 15px
+
+
+.results-info
+  flex-grow: 1
+  min-width: 0
+
+.results-title
+  color: #333
+  font-size: 16px
+
+.results-sub
+  color: #999
+  padding-top: 3px
+  font-size: 14px
+
+.results-review
+
+  .span-main
+    vertical-align: middle
+    color: #e7711b
+    margin-right: 5px
+
+  .span-sub
+    vertical-align: middle
+    color: #999
+    margin-left: 5px

@@ -1,7 +1,27 @@
-<div class="results-wrapper">
+<div id="results-wrapper" class="left-panel">
   <div class="results-top"></div>
-  <ul>
+  <ul class="results-list" data-bind="foreach: results">
+    <li class="results-item" data-bind="click: $parent.handleItemClick">
+      <div class="results-info">
+        <div class="results-title text-ellipsis" data-bind="text: title">
+        </div>
 
+        <div class="results-review stars-div text-ellipsis">
+          <span class="span-main" data-bind="text: review"></span>
+          <stars params="className: 'star-oranges', review: review"></stars>
+          <span class="span-sub" data-bind="text: totalReviews + ' reviews'"></span>
+        </div>
+
+        <div class="results-sub text-ellipsis" data-bind="text: type">
+        </div>
+
+        <div class="results-sub text-ellipsis" data-bind="text: address">
+        </div>
+
+        <div class="results-sub text-ellipsis" data-bind="text: 'Open until '+open">
+        </div>
+      </div>
+      <img data-bind="attr: {src: picture}">
+    </li>
   </ul>
-
 </div>

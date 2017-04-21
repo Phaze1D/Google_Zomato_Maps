@@ -8,6 +8,8 @@ import { component } from 'utils/decorators';
 })
 class SearchController {
   constructor(params) {
+    this.onRequestSubmit = params.onRequestSubmit;
+    this.onRequestReset = params.onRequestReset;
     this.didSubmit = false;
     this.showHolder = ko.observable(true);
     this.showClear = ko.observable(true);
@@ -63,8 +65,16 @@ class SearchController {
     this.showAuto(false);
     this.showClear(true);
     var input = document.getElementById('search-input');
+    var value = input.value;
     input.blur();
-    if(createNew){
+
+    if(value && value.length > 0){
+      this.onRequestSubmit();
+    }else{
+      this.onRequestReset();
+    }
+
+    if(createNew && value && value.length > 0){
       var value = this.convertValue(input.value);
       this.updateLocalStorage(value);
       this.addValue(value);
@@ -76,6 +86,7 @@ class SearchController {
     var input = document.getElementById('search-input');
     input.value = '';
     input.blur();
+    this.onRequestReset();
     this.showHolder(true);
   }
 

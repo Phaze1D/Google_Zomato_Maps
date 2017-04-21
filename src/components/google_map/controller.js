@@ -16,6 +16,7 @@ class GoogleMapController {
     GoogleMapsLoader.KEY = 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
     GoogleMapsLoader.LIBRARIES = ['places'];
     GoogleMapsLoader.load(this.getUserLocation.bind(this))
+
   }
 
   getUserLocation(google){
@@ -51,5 +52,16 @@ class GoogleMapController {
 
   handleError(){
 
+  }
+
+  onSearchSubmitCallback(){
+    var resultsWrap = document.getElementById('results-wrapper');
+    resultsWrap.classList.add('show');
+    document.getElementById('autocomplete-wrapper').style.top = "80px";
+  }
+
+  onSearchResetCallback(){
+    var resultsWrap = document.getElementById('results-wrapper');
+    resultsWrap.classList.remove('show');
   }
 }
