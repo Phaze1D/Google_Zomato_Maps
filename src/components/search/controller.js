@@ -14,6 +14,7 @@ class SearchController {
     this.showHolder = ko.observable(true);
     this.showClear = ko.observable(true);
     this.showAuto = ko.observable(false);
+    this.searchValue = ko.observable("");
     this.autoList = ko.observableArray();
 
     this.onItemCallback = this.onItemCallback.bind(this);
@@ -64,34 +65,33 @@ class SearchController {
     this.didSubmit = true;
     this.showAuto(false);
     this.showClear(true);
-    var input = document.getElementById('search-input');
-    var value = input.value;
-    input.blur();
+    document.getElementById('search-input').blur();
 
-    if(value && value.length > 0){
+    if(this.searchValue() && this.searchValue().length > 0){
       this.onRequestSubmit();
+
+      if(createNew){
+        var value = this.convertValue(this.searchValue());
+        this.updateLocalStorage(value);
+        this.addValue(value);
+      }
+
     }else{
       this.onRequestReset();
     }
 
-    if(createNew && value && value.length > 0){
-      var value = this.convertValue(input.value);
-      this.updateLocalStorage(value);
-      this.addValue(value);
-    }
   }
 
   handleReset(data, event){
     this.didSubmit = false;
-    var input = document.getElementById('search-input');
-    input.value = '';
-    input.blur();
+    document.getElementById('search-input').blur();
+    this.searchValue('')
     this.onRequestReset();
     this.showHolder(true);
   }
 
   onItemCallback(value){
-    document.getElementById('search-input').value = value;
+    this.searchValue(value);
     this.handleSubmit(null, false);
   }
 }
