@@ -1,8 +1,10 @@
 <div id="item-wrapper" class="left-panel">
-  <a class="item-back" href="#">Back to results</a>
+  <a class="item-back" href="#" data-bind="click: handleBack">Back to results</a>
   <div class="item-img" data-bind="attr: {style: 'background-image: url(' + mainImage + ')'}"></div>
+  <div id="item-search-background"></div>
 
-  <div class="item-above">
+  <div id="item-above" data-bind="event: {scroll: handleScroll}">
+
     <section class="item-header">
       <h3 data-bind="text: result.title"></h3>
 
@@ -34,20 +36,21 @@
     <section class="item-info">
       <p data-bind="text: result.description"></p>
       <ul>
-        <li class="item-info-item">
+        <li class="item-info-item" data-bind="visible: result.address">
           <i class="material-icons">place</i>
           <span data-bind="text: result.address"></span>
         </li>
-        <li class="item-info-item">
+        <li class="item-info-item" data-bind="visible: result.phone">
           <i class="material-icons">phone</i>
           <span data-bind="text: result.phone"></span>
         </li>
-        <li class="item-info-item">
+        <li class="item-info-item" data-bind="visible: result.open">
           <i class="material-icons">schedule</i>
           <span data-bind="text: 'Open until '+ result.open"></span>
         </li>
-        <li class="item-info-item">
+        <li class="item-info-item" data-bind="visible: result.menu">
           <i class="material-icons">restaurant_menu</i>
+          <span data-bind="text: 'Menu '+ result.menu"></span>
         </li>
       </ul>
     </section>
@@ -55,9 +58,19 @@
     <section class="item-review">
       <h3>Review summary</h3>
 
-      <div class="item-histogram">
-        <div class="">
-
+      <div class="item-review-info">
+        <div class="item-histogram" data-bind="foreach: new Array(5)">
+          <div class="bar-section">
+            <span data-bind="text: ($index() - 5)*-1"></span>
+            <span>
+              <svg viewBox="0 0 32 32" class="star-oranges">
+                 <use class="empty" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#empty-star"></use>
+              </svg>
+            </span>
+            <div class="bar" data-bind="attr: {style: 'padding-right:' + Math.random() * 121 + 'px'}">
+              <div class="bar-fill"></div>
+            </div>
+          </div>
         </div>
 
         <div class="item-review-main">
@@ -66,9 +79,14 @@
           <span data-bind="text: result.totalReviews + ' reviews'"></span>
         </div>
       </div>
+    </section>
+
+    <section class="item-review">
+      <h3>Reviews</h3>
+      <div class="" data-bind="foreach: new Array(5)">
+        <review-comment></review-comment>
+      </div>
 
     </section>
   </div>
-
-
 </div>

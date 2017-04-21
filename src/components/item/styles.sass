@@ -23,12 +23,6 @@
   background-size: cover
   background-position: center
 
-.item-above
-  position: absolute
-  top: 0
-  max-height: 100%
-  padding-top: 30vh
-  overflow-y: scroll
 
 .item-header
   position: relative
@@ -131,10 +125,36 @@
     font-size: 18px
     padding-bottom: 10px
 
-.item-histogram
+.item-review-info
+  display: flex
+  align-items: flex-start
   padding: 10px 0
   height: 137px
   width: 100%
+
+.item-histogram
+  width: 157px
+  margin-right: 22px
+
+.bar-section
+  display: flex
+  align-items: center
+  font-size: 14px
+  color: #666
+  -webkit-font-smoothing: antialiased
+
+  .bar
+    height: 21px
+    width: 121px
+    padding: 1px 0
+
+  .bar-fill
+    height: 100%
+    background-color: #EB6E00
+    border-radius: 0 3px 3px 0
+
+  span
+    margin: 5px 5px 2px 0
 
 
 .item-review-main
@@ -156,3 +176,23 @@
   .star
     width: 14px
     height: 14px
+
+
+#item-search-background
+  position: absolute
+  top: 0
+  left: 0
+  background-color: #4285F4
+  width: 100%
+  height: 64px
+  z-index: 20
+  opacity: 0
+  will-change: opacity
+
+
+#item-above
+  position: absolute
+  top: 0
+  max-height: 100%
+  padding-top: 30vh
+  overflow-y: scroll
