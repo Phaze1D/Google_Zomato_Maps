@@ -2,6 +2,7 @@
   box-sizing: border-box
 
 body
+  overflow: hidden
   margin: 0
   font-family: Roboto,Arial,sans-serif
 
@@ -9,3 +10,52 @@ ul
   list-style: none
   padding: 0
   margin: 0
+
+
+.text-ellipsis
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+
+.left-panel
+  position: absolute
+  top: 0
+  left: 0
+  height: 100vh
+  width: 400px
+  box-shadow: 0 0 8px rgba(0,0,0,0.3)
+  background-color: white
+  // transform: translateY(100%)
+  transition: transform 0.3s
+
+  &.show
+    transform: translateY(0)
+
+
+.star-oranges
+  width: 14px
+  height: 14px
+
+  .full
+    fill: #e7711b
+
+  .empty
+    fill: #d1d1d1
+
+
+.star-white
+  width: 14px
+  height: 14px
+
+  .full
+    fill: #fff
+
+  .empty
+    fill: rgba(0,0,0,0.3)
+
+
+.stars-div
+  display: flex
+  align-items: center
+  font-size: 14px
