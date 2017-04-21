@@ -1,0 +1,74 @@
+<div id="item-wrapper" class="left-panel">
+  <a class="item-back" href="#">Back to results</a>
+  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + mainImage + ')'}"></div>
+
+  <div class="item-above">
+    <section class="item-header">
+      <h3 data-bind="text: result.title"></h3>
+
+      <div class="stars-div">
+        <span class="left" data-bind="text: result.review"></span>
+        <stars params="className: 'star-white', review: result.review"></stars>
+        <span class="right" data-bind="text: result.totalReviews + ' reviews'"></span>
+      </div>
+
+      <p data-bind="text: result.type"></p>
+      <fab params="className: 'item-fab', icon: 'directions'"></fab>
+    </section>
+
+    <ul class="item-options">
+      <a href="#">
+        <i class="material-icons">phone</i>
+        call
+      </a>
+      <a href="#">
+        <i class="material-icons">star</i>
+        save
+      </a>
+      <a href="#">
+        <i class="material-icons">public</i>
+        website
+      </a>
+    </ul>
+
+    <section class="item-info">
+      <p data-bind="text: result.description"></p>
+      <ul>
+        <li class="item-info-item">
+          <i class="material-icons">place</i>
+          <span data-bind="text: result.address"></span>
+        </li>
+        <li class="item-info-item">
+          <i class="material-icons">phone</i>
+          <span data-bind="text: result.phone"></span>
+        </li>
+        <li class="item-info-item">
+          <i class="material-icons">schedule</i>
+          <span data-bind="text: 'Open until '+ result.open"></span>
+        </li>
+        <li class="item-info-item">
+          <i class="material-icons">restaurant_menu</i>
+        </li>
+      </ul>
+    </section>
+
+    <section class="item-review">
+      <h3>Review summary</h3>
+
+      <div class="item-histogram">
+        <div class="">
+
+        </div>
+
+        <div class="item-review-main">
+          <h1 data-bind="text: result.review"></h1>
+          <stars params="className: 'star-oranges', review: result.review"></stars>
+          <span data-bind="text: result.totalReviews + ' reviews'"></span>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+
+</div>
