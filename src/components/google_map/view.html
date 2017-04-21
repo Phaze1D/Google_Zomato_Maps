@@ -3,10 +3,10 @@
 
   <section data-bind="visible: showMap()">
     <div id="google-map"></div>
-    <search-input></search-input>
+    <search-input params="onRequestSubmit: onSearchSubmitCallback, onRequestReset: onSearchResetCallback"></search-input>
     <results></results>
+    <item></item>
     <fab params="className: 'fab-current', icon: 'my_location'"></fab>
     <fab params="className: 'fab-direction', icon: 'directions'"></fab>
-
   </section>
 </div>
