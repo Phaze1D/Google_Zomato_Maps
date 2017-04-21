@@ -7,6 +7,7 @@ import 'components/autocomplete';
 import 'components/results';
 import 'components/stars';
 import 'components/item';
+import 'components/comment';
 import 'index.sass';
 
 
