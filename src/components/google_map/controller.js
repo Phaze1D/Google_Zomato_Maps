@@ -57,11 +57,33 @@ class GoogleMapController {
   onSearchSubmitCallback(){
     var resultsWrap = document.getElementById('results-wrapper');
     resultsWrap.classList.add('show');
-    document.getElementById('autocomplete-wrapper').style.top = "80px";
+    var itemsWrap = document.getElementById('item-wrapper');
+    itemsWrap.classList.remove('show');
+    document.getElementById('autocomplete-wrapper').style.top = "";
+
   }
 
   onSearchResetCallback(){
     var resultsWrap = document.getElementById('results-wrapper');
     resultsWrap.classList.remove('show');
+    var itemsWrap = document.getElementById('item-wrapper');
+    itemsWrap.classList.remove('show');
+    document.getElementById('autocomplete-wrapper').style.top = "";
+  }
+
+  onItemCallback(){
+    var resultsWrap = document.getElementById('results-wrapper');
+    resultsWrap.classList.remove('show');
+    var itemsWrap = document.getElementById('item-wrapper');
+    itemsWrap.classList.add('show');
+    document.getElementById('autocomplete-wrapper').style.top = "80px";
+  }
+
+  onItemBackCallback(){
+    var resultsWrap = document.getElementById('results-wrapper');
+    resultsWrap.classList.add('show');
+    var itemsWrap = document.getElementById('item-wrapper');
+    itemsWrap.classList.remove('show');
+    document.getElementById('autocomplete-wrapper').style.top = "";
   }
 }
