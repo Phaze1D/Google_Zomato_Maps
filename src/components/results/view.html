@@ -9,7 +9,6 @@
         <div class="results-review stars-div text-ellipsis">
           <span class="span-main" data-bind="text: review"></span>
           <stars params="className: 'star-oranges', review: review"></stars>
-          <span class="span-sub" data-bind="text: totalReviews + ' reviews'"></span>
         </div>
 
         <div class="results-sub text-ellipsis" data-bind="text: type">
@@ -18,10 +17,10 @@
         <div class="results-sub text-ellipsis" data-bind="text: address">
         </div>
 
-        <div class="results-sub text-ellipsis" data-bind="text: 'Open until '+open">
+        <div class="results-sub text-ellipsis" data-bind="text: (open ? 'Opened' : 'Closed')">
         </div>
       </div>
-      <img data-bind="attr: {src: picture}">
+      <div  class="results-img" data-bind="style: {backgroundImage: 'url('+picture+')'}"> </div>
     </li>
   </ul>
 </div>

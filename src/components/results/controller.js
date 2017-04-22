@@ -10,11 +10,7 @@ import { fakeResult } from '../../../fake.js'
 class ResultsController {
   constructor(params) {
     this.onRequestItem = params.onRequestItem
-    this.results = []
-
-    for (var i = 0; i < 10; i++) {
-      this.results.push(fakeResult())
-    }
+    this.results = params.results
 
     this.handleItemClick = this.handleItemClick.bind(this)
   }
