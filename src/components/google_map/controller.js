@@ -1,6 +1,7 @@
-import ko from 'knockout'
-import GoogleMapsLoader from 'google-maps'
-import { component } from 'utils/decorators'
+import ko from 'knockout';
+import { component } from 'utils/decorators';
+import { mapSingleton } from 'utils/map';
+import { searchTextRequest } from 'actions/action'
 
 
 
@@ -12,78 +13,75 @@ import { component } from 'utils/decorators'
 class GoogleMapController {
   constructor(params) {
     this.showMap = ko.observable(false);
+    this.fetching = ko.observable(false);
+    this.results = ko.observableArray();
+    mapSingleton.load(this.onMapLoadCallback.bind(this));
 
-    GoogleMapsLoader.KEY = 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
-    GoogleMapsLoader.LIBRARIES = ['places'];
-    GoogleMapsLoader.load(this.getUserLocation.bind(this))
-
+    this.onSearchSubmitCallback = this.onSearchSubmitCallback.bind(this);
+    this.onSearchResetCallback = this.onSearchResetCallback.bind(this);
+    this.onItemCallback = this.onItemCallback.bind(this);
+    this.onItemBackCallback = this.onItemBackCallback.bind(this);
+    this.onSearchTextCallback = this.onSearchTextCallback.bind(this);
   }
 
-  getUserLocation(google){
-    this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    // if(navigator.geolocation){
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     var pos = {
-    //       lat: position.coords.latitude,
-    //       lng: position.coords.longitude
-    //     };
-    //     this.initMap(google, pos)
-    //
-    //   }, () => {
-    //     this.handleError();
-    //     this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    //   });
-    //
-    // }else{
-    //   this.handleError();
-    //   this.initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    // }
+  showResults(show){
+    var resultsWrap = document.getElementById('results-wrapper');
+    resultsWrap.classList[show ? 'add' : 'remove']('show');
   }
 
-  initMap(google, pos){
-    this.showMap(true);
-    this.map = new google.maps.Map(document.getElementById('google-map'), {
-      center: pos,
-      scrollwheel: false,
-      zoom: 10,
-      disableDefaultUI: true
-    });
+  showItem(show){
+    var itemsWrap = document.getElementById('item-wrapper');
+    itemsWrap.classList[show ? 'add' : 'remove']('show');
+    document.getElementById('autocomplete-wrapper').style.top = show ? "80px" : '';
   }
 
   handleError(){
 
   }
 
-  onSearchSubmitCallback(){
-    var resultsWrap = document.getElementById('results-wrapper');
-    resultsWrap.classList.add('show');
-    var itemsWrap = document.getElementById('item-wrapper');
-    itemsWrap.classList.remove('show');
-    document.getElementById('autocomplete-wrapper').style.top = "";
+  onMapLoadCallback(){
+    this.showMap(true);
+  }
 
+  onSearchSubmitCallback(value){
+    var params = {
+      keyword: value.main + (value.sub ? ", " + value.sub : ''),
+      location: mapSingleton.getCenter(),
+      radius: 2000
+    }
+    this.fetching(true)
+    searchTextRequest(params, this.onSearchTextCallback)
   }
 
   onSearchResetCallback(){
-    var resultsWrap = document.getElementById('results-wrapper');
-    resultsWrap.classList.remove('show');
-    var itemsWrap = document.getElementById('item-wrapper');
-    itemsWrap.classList.remove('show');
-    document.getElementById('autocomplete-wrapper').style.top = "";
+    this.showResults(false);
+    this.showItem(false);
   }
 
   onItemCallback(){
-    var resultsWrap = document.getElementById('results-wrapper');
-    resultsWrap.classList.remove('show');
-    var itemsWrap = document.getElementById('item-wrapper');
-    itemsWrap.classList.add('show');
-    document.getElementById('autocomplete-wrapper').style.top = "80px";
+    this.showResults(false);
+    this.showItem(true);
   }
 
   onItemBackCallback(){
-    var resultsWrap = document.getElementById('results-wrapper');
-    resultsWrap.classList.add('show');
-    var itemsWrap = document.getElementById('item-wrapper');
-    itemsWrap.classList.remove('show');
-    document.getElementById('autocomplete-wrapper').style.top = "";
+    this.showResults(true);
+    this.showItem(false);
+  }
+
+  onSearchTextCallback(results, status){
+    console.log(results);
+    this.fetching(false)
+    this.showResults(true);
+    this.showItem(false);
+    for (var i = 0; i < results.length; i++) {
+      this.results.push({
+        title: results[i].name,
+        review: results[i].rating,
+        type: results[i].types ? results[i].types[0] : '',
+        address: results[i].vicinity,
+        open: results[i].opening_hours ? results[i].opening_hours.open_now : false,
+        picture: results[i].photos ? results[i].photos[0].getUrl({'maxWidth': 160, 'maxHeight': 160}) : '',
+      })
+    }
   }
 }
