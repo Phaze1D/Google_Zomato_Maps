@@ -51,6 +51,7 @@ class GoogleMapController {
     }
     this.fetching(true)
     searchTextRequest(params, this.onSearchTextCallback)
+    this.results.removeAll()
   }
 
   onSearchResetCallback(){
