@@ -9,14 +9,15 @@
 
   <form data-bind="submit: handleSubmit">
     <input id="search-input" type="text" name="" value="" autocomplete="off"
-           data-bind="textInput: searchValue, event: {focusin: handleFocusIn, focusout: handleFocusOut, change: handleOnChange}">
-    <button class="search-button-right" type="submit" data-bind="visible: !showHolder() && !showClear()">
+           data-bind="textInput: searchValue, event: {focusin: handleFocusIn, focusout: handleFocusOut}">
+    <button class="search-button-right" type="submit" data-bind="visible: !fetching() && !showHolder() && !showClear()">
       <i class="material-icons">arrow_forward</i>
     </button>
 
-    <button class="search-button-right" type="reset" data-bind="{event: {mousedown: handleReset}, visible: !showHolder() && showClear()}">
+    <button class="search-button-right" type="reset" data-bind="{event: {mousedown: handleReset}, visible: !fetching() && !showHolder() && showClear()}">
       <i class="material-icons">clear</i>
     </button>
+    <spinner params="width: 20, strokeWidth: 4, classes: 'search-spinner'" data-bind="visible: fetching()"></spinner>
   </form>
   <autocomplete params="onRequestItem: onItemCallback" data-bind="visible: showAuto()">
   </autocomplete>
