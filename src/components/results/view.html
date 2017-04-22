@@ -6,7 +6,7 @@
         <div class="results-title text-ellipsis" data-bind="text: title">
         </div>
 
-        <div class="results-review stars-div text-ellipsis">
+        <div class="results-review stars-div text-ellipsis" data-bind="visible: review">
           <span class="span-main" data-bind="text: review"></span>
           <stars params="className: 'star-oranges', review: review"></stars>
         </div>
