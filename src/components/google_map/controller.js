@@ -48,10 +48,10 @@ class GoogleMapController {
       keyword: value.main + (value.sub ? ", " + value.sub : ''),
       location: mapSingleton.getCenter(),
       radius: 2000
-    }
-    this.fetching(true)
-    searchTextRequest(params, this.onSearchTextCallback)
-    this.results.removeAll()
+    };
+    this.fetching(true);
+    searchTextRequest(params, this.onSearchTextCallback);
+    this.results.removeAll();
   }
 
   onSearchResetCallback(){
