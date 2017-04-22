@@ -13,8 +13,13 @@ class AutoComplete {
   }
 
   handleItemClick(data, event){
-    var value = data.main;
-    value += data.sub && data.sub.length > 0 ? `, ${data.sub}` : '';
+    var value = {
+      icon: 'schedule',
+      main: data.main,
+      sub: data.sub,
+      recent: data.recent,
+      place_id: data.place_id
+    };
     this.onRequestItem(value);
   }
 }
