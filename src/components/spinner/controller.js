@@ -8,6 +8,7 @@ import { component } from 'utils/decorators';
 })
 class SpinnerController {
   constructor(params) {
+    this.classes = "loader " + params.classes;
     this.width = params.width ? `${params.width}px` : '100px';
     this.strokeWidth = params.strokeWidth ? params.strokeWidth : 3;
   }
