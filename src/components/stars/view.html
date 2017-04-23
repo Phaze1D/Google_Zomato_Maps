@@ -1,16 +1,15 @@
 <div style="display: inline-flex" data-bind="foreach: new Array(total)">
 
-  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: Math.floor($parent.review) > $index()">
+  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: Math.floor($parent.ratingComp()) > $index()">
      <use class="full" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-star"></use>
   </svg>
 
-  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: $parent.review > $index() && $parent.review < $index() + 1">
+  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: $parent.ratingComp() > $index() && $parent.ratingComp() < $index() + 1">
      <polygon class="full" points="11.547,10.918 0,12.118 8.822,19.867 6.127,31.4 16,25.325 16,0.66 	"></polygon>
      <polygon class="empty" points="32,12.118 20.389,10.918 16.026,0.6 16,0.66 16,25.325 16.021,25.312 25.914,31.4 23.266,19.867"></polygon>
   </svg>
 
-  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: Math.floor($parent.review) < $index() || $parent.review == $index()">
+  <svg viewBox="0 0 32 32" data-bind="attr: {class: $parent.className}, visible: Math.floor($parent.ratingComp()) < $index() || $parent.ratingComp() == $index()">
      <use class="empty" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#empty-star"></use>
   </svg>
-
 </div>

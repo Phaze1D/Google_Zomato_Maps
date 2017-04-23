@@ -10,9 +10,11 @@ import { component } from 'utils/decorators';
 class StarsController {
   constructor(params) {
     this.total = params.total ? params.total : 5;
-    this.review = params.review;
     this.className = params.className;
 
+    this.ratingComp = ko.computed(() => {
+      return typeof params.rating === 'function' ? params.rating() : params.rating;
+    });
   }
 }
 
