@@ -1,20 +1,19 @@
 <div id="item-wrapper" class="left-panel">
   <a class="item-back" href="#" data-bind="click: handleBack">Back to results</a>
-  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + mainImage + ')'}"></div>
+  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + place().photo + ')'}"></div>
   <div id="item-search-background"></div>
 
   <div id="item-above" data-bind="event: {scroll: handleScroll}">
 
     <section class="item-header">
-      <h3 data-bind="text: result.title"></h3>
+      <h3 data-bind="text: place().name"></h3>
 
       <div class="stars-div">
-        <span class="left" data-bind="text: result.review"></span>
-        <stars params="className: 'star-white', review: result.review"></stars>
-        <span class="right" data-bind="text: result.totalReviews + ' reviews'"></span>
+        <span class="left" data-bind="text: place().rating ? place().rating : 'No Reviews'"></span>
+        <stars params="className: 'star-white', rating: place().rating"></stars>
       </div>
 
-      <p data-bind="text: result.type"></p>
+      <p data-bind="text: place().type"></p>
       <fab params="className: 'item-fab', icon: 'directions'"></fab>
     </section>
 
@@ -34,27 +33,24 @@
     </ul>
 
     <section class="item-info">
-      <p data-bind="text: result.description"></p>
+      <p data-bind="text: place().description"></p>
       <ul>
-        <li class="item-info-item" data-bind="visible: result.address">
+        <li class="item-info-item" data-bind="visible: place().formatted_address">
           <i class="material-icons">place</i>
-          <span data-bind="text: result.address"></span>
+          <span data-bind="text: place().formatted_address"></span>
         </li>
-        <li class="item-info-item" data-bind="visible: result.phone">
+        <li class="item-info-item" data-bind="visible: place().formatted_phone_number">
           <i class="material-icons">phone</i>
-          <span data-bind="text: result.phone"></span>
+          <span data-bind="text: place().formatted_phone_number"></span>
         </li>
-        <li class="item-info-item" data-bind="visible: result.open">
+        <li class="item-info-item">
           <i class="material-icons">schedule</i>
-          <span data-bind="text: 'Open until '+ result.open"></span>
-        </li>
-        <li class="item-info-item" data-bind="visible: result.menu">
-          <i class="material-icons">restaurant_menu</i>
-          <span data-bind="text: 'Menu '+ result.menu"></span>
+          <span data-bind="text: place().open ? 'Opened' : 'Closed'"></span>
         </li>
       </ul>
     </section>
 
+    <!--  ko if: place().reviews -->
     <section class="item-review">
       <h3>Review summary</h3>
 
@@ -73,20 +69,22 @@
           </div>
         </div>
 
-        <div class="item-review-main">
-          <h1 data-bind="text: result.review"></h1>
-          <stars params="className: 'star-oranges', review: result.review"></stars>
-          <span data-bind="text: result.totalReviews + ' reviews'"></span>
+        <div class="item-review-main" data-bind="if: place().rating != undefined">
+          <h1 data-bind="text: place().rating"></h1>
+          <stars params="className: 'star-oranges', rating: place().rating"></stars>
         </div>
       </div>
     </section>
+    <!-- /ko -->
 
+    <!--  ko if: place().reviews -->
     <section class="item-review">
       <h3>Reviews</h3>
-      <div class="" data-bind="foreach: new Array(5)">
-        <review-comment></review-comment>
+      <div class="" data-bind="foreach: place().reviews">
+        <review-comment params="review: $data"></review-comment>
       </div>
-
     </section>
+    <!-- /ko -->
+
   </div>
 </div>
