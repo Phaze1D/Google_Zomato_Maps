@@ -38,7 +38,7 @@ var config = {
       use: [{
         loader: 'html-loader',
         options: {
-          minimize: true
+          minimize: false
         }
       }]
     }]
