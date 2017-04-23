@@ -9,6 +9,6 @@ import { component } from 'utils/decorators';
 })
 class CommentController {
   constructor(params) {
-    
+    this.review = params.review;
   }
 }
