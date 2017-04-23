@@ -16,6 +16,6 @@ class ResultsController {
   }
 
   handleItemClick(data, event){
-    this.onRequestItem()
+    this.onRequestItem(data)
   }
 }
