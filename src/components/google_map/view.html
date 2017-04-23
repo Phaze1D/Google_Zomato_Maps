@@ -4,8 +4,8 @@
   <section data-bind="visible: showMap()">
     <div id="google-map"></div>
     <search-input params="fetching: fetching(), onRequestSubmit: onSearchSubmitCallback, onRequestReset: onSearchResetCallback"></search-input>
-    <results params="results: results, onRequestItem: onItemCallback"></results>
-    <item params="onRequestBack: onItemBackCallback"></item>
+    <results params="results: results(), onRequestItem: onItemCallback"></results>
+    <item params="place: place(), onRequestBack: onItemBackCallback"></item>
     <fab params="className: 'fab-current', icon: 'my_location'"></fab>
     <fab params="className: 'fab-direction', icon: 'directions'"></fab>
   </section>
