@@ -40,6 +40,10 @@ class MapSingleton {
       center: pos,
       scrollwheel: false,
       zoom: 10,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT
+      },
       disableDefaultUI: true
     });
   }
