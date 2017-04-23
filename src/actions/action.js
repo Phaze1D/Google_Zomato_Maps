@@ -14,8 +14,9 @@ export const searchTextRequest = function (params, callback) {
 }
 
 
-export const googlePlaceDetailRequest = function (id, callback) {
-
+export const googlePlaceDetailRequest = function (params, callback) {
+  var service = new google.maps.places.PlacesService(mapSingleton.getMap());
+  service.getDetails(params, callback);
 }
 
 
