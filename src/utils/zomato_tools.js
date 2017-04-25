@@ -22,7 +22,7 @@ export let zomatoSearchAPI = function(query, success, failed) {
   }).then((response) => {
     success(formatResults(response.data.restaurants));
   }).catch((error) => {
-    failed(error);
+    failed(error.toString());
   });
 }
 
@@ -33,7 +33,7 @@ export let zomatoDetailAPI = function (id, success, failed) {
     responses[0].data.reviews = responses[1].data.user_reviews;
     success(formatPlace(responses[0].data));
   }).catch((error) => {
-    failed(error);
+    failed(error.toString());
   })
 }
 

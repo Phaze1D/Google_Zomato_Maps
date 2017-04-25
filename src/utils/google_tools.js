@@ -12,7 +12,13 @@ export let googleAutocompleteAPI = function (value, success, failed) {
   };
   var service = new google.maps.places.AutocompleteService();
   service.getQueryPredictions(params, (results, status) => {
-    success(results);
+    if(status === 'OK' || status === 'ZERO_RESULTS'){
+      results = results ? results : [];
+      success(results);
+    }else{
+      status = status.replace('_', ' ')
+      failed(status);
+    }
   });
 }
 
@@ -24,7 +30,14 @@ export let googleSearchAPI = function (query, success, failed) {
   };
   let service = new google.maps.places.PlacesService(mapSingleton.getMap());
   service.nearbySearch(params, (results, status) => {
-    success(formatResults(results));
+    if(status === 'OK' || status === 'ZERO_RESULTS'){
+      results = results ? results : [];
+      success(formatResults(results));
+    }else{
+      status = status.replace('_', ' ')
+      failed(status);
+    }
+
   });
 }
 
@@ -32,13 +45,24 @@ export let googleDetailAPI = function (id, success, failed) {
   let params = {placeId: id};
   let service = new google.maps.places.PlacesService(mapSingleton.getMap());
   service.getDetails(params, (place, status) => {
-    success(formatPlace(place));
+    if(status === 'OK'){
+      success(formatPlace(place));
+    }else{
+      status = status.replace('_', ' ')
+      failed(status);
+    }
+
   });
 }
 
 export let googleGeoCoder = function (address, success, failed) {
   mapSingleton.geocoder.geocode( { 'address': address}, (results, status) => {
-    success(results[0])
+    if(status === 'OK'){
+      success(results[0]);
+    }else{
+      status = status.replace('_', ' ')
+      failed(status);
+    }
   });
 }
 
