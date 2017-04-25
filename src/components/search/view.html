@@ -1,10 +1,13 @@
 <div class="search-wrapper">
-  <button class="search-button" type="button">
-    <i class="material-icons">menu</i>
+  <button class="search-button" type="button" data-bind="click: function() { $data.handleFlip($parents[$parents.length - 2]) }">
+    <div class="flipper" data-bind="style: {transform: $parents[$parents.length - 2].type() ? 'rotateY(0deg)' : 'rotateY(180deg)'}">
+      <img class="front" src="https://i.stack.imgur.com/Ga0da.png" alt="google-logo">
+      <img class="back" src="https://b.zmtcdn.com/images/logo/zomato.jpg" alt="yelp-logo">
+    </div>
   </button>
 
   <div class="search-holder" data-bind="visible: showHolder()">
-    Search Google Maps
+    Search
   </div>
 
   <form data-bind="submit: handleSubmit">
