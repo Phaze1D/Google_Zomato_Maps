@@ -1,90 +1,99 @@
-<div id="item-wrapper" data-bind="attr: {class: $parents[$parents.length - 2].type() ? 'left-panel google' : 'left-panel yelp'}">
-  <a class="item-back" href="#" data-bind="click: handleBack">Back to results</a>
-  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + place().cover + ')'}"></div>
-  <div id="item-search-background"></div>
+<div id="item-wrapper" data-bind="attr: {class: show() ? 'left-panel show' : 'left-panel'}">
 
-  <div id="item-above" data-bind="event: {scroll: handleScroll}">
+  <div data-bind="attr: {class: $parents[$parents.length - 2].type() ? 'google' : 'yelp'}, if: place()">
+    <a class="item-back" href="#" data-bind="click: handleBack">Back to results</a>
+    <!--  ko if: place().cover === 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png'-->
+    <div class="item-img filter" data-bind="attr: {style: 'background-image: url(' + place().cover + ')'}"></div>
+    <!--  /ko -->
+    <!--  ko if: place().cover !== 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png'-->
+    <div class="item-img" data-bind="attr: {style: 'background-image: url(' + place().cover + ')'}"></div>
+    <!--  /ko -->
 
-    <section class="item-header">
-      <h3 data-bind="text: place().name"></h3>
+    <div id="item-search-background"></div>
 
-      <div class="stars-div">
-        <span class="left" data-bind="text: place().rating ? place().rating : 'No Reviews'"></span>
-        <stars params="className: 'star-white', rating: place().rating"></stars>
-      </div>
+    <div id="item-above" data-bind="event: {scroll: handleScroll}">
 
-      <p data-bind="text: place().type"></p>
-      <fab params="className: 'item-fab', icon: 'directions'"></fab>
-    </section>
+      <section class="item-header">
+        <h3 data-bind="text: place().name"></h3>
 
-    <ul class="item-options">
-      <a href="#">
-        <i class="material-icons">phone</i>
-        call
-      </a>
-      <a href="#">
-        <i class="material-icons">star</i>
-        save
-      </a>
-      <a href="#">
-        <i class="material-icons">public</i>
-        website
-      </a>
-    </ul>
+        <div class="stars-div">
+          <span class="left" data-bind="text: place().rating ? place().rating : 'No Reviews'"></span>
+          <stars params="className: 'star-white', rating: place().rating"></stars>
+        </div>
 
-    <section class="item-info">
-      <p data-bind="text: place().description"></p>
-      <ul>
-        <li class="item-info-item" data-bind="visible: place().address">
-          <i class="material-icons">place</i>
-          <span data-bind="text: place().address"></span>
-        </li>
-        <li class="item-info-item" data-bind="visible: place().phone">
+        <p data-bind="text: place().type"></p>
+        <fab params="className: 'item-fab', icon: 'directions', onClick: function(){$parents[$parents.length - 2].onErrorCallback('Feature Not Available')}"></fab>
+      </section>
+
+      <ul class="item-options">
+        <a href="#" data-bind="click: function(){$parents[$parents.length - 2].onErrorCallback('Feature Not Available')}">
           <i class="material-icons">phone</i>
-          <span data-bind="text: place().phone"></span>
-        </li>
-        <li class="item-info-item">
-          <i class="material-icons">schedule</i>
-          <span data-bind="text: place().opened ? 'Opened' : 'Closed'"></span>
-        </li>
+          call
+        </a>
+        <a href="#" data-bind="click: function(){$parents[$parents.length - 2].onErrorCallback('Feature Not Available')}">
+          <i class="material-icons">star</i>
+          save
+        </a>
+        <a href="#" data-bind="click: function(){$parents[$parents.length - 2].onErrorCallback('Feature Not Available')}">
+          <i class="material-icons">public</i>
+          website
+        </a>
       </ul>
-    </section>
 
-    <!--  ko if: place().reviews -->
-    <section class="item-review">
-      <h3>Review summary</h3>
+      <section class="item-info">
+        <p data-bind="text: place().description"></p>
+        <ul>
+          <li class="item-info-item" data-bind="visible: place().address">
+            <i class="material-icons">place</i>
+            <span data-bind="text: place().address"></span>
+          </li>
+          <li class="item-info-item" data-bind="visible: place().phone">
+            <i class="material-icons">phone</i>
+            <span data-bind="text: place().phone"></span>
+          </li>
+          <li class="item-info-item">
+            <i class="material-icons">schedule</i>
+            <span data-bind="text: place().opened ? 'Opened' : 'Closed'"></span>
+          </li>
+        </ul>
+      </section>
 
-      <div class="item-review-info">
-        <div class="item-histogram" data-bind="foreach: new Array(5)">
-          <div class="bar-section">
-            <span data-bind="text: ($index() - 5)*-1"></span>
-            <span>
-              <svg viewBox="0 0 32 32" class="star-oranges">
-                 <use class="empty" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#empty-star"></use>
-              </svg>
-            </span>
-            <div class="bar" data-bind="attr: {style: 'padding-right:' + Math.random() * 121 + 'px'}">
-              <div class="bar-fill"></div>
+      <!--  ko if: place().reviews -->
+      <section class="item-review">
+        <h3>Review summary</h3>
+
+        <div class="item-review-info">
+          <div class="item-histogram" data-bind="foreach: new Array(5)">
+            <div class="bar-section">
+              <span data-bind="text: ($index() - 5)*-1"></span>
+              <span>
+                <svg viewBox="0 0 32 32" class="star-oranges">
+                   <use class="empty" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#empty-star"></use>
+                </svg>
+              </span>
+              <div class="bar" data-bind="attr: {style: 'padding-right:' + Math.random() * 121 + 'px'}">
+                <div class="bar-fill"></div>
+              </div>
             </div>
           </div>
+
+          <div class="item-review-main" data-bind="if: place().rating != undefined">
+            <h1 data-bind="text: place().rating"></h1>
+            <stars params="className: 'star-oranges', rating: place().rating"></stars>
+          </div>
         </div>
+      </section>
+      <!-- /ko -->
 
-        <div class="item-review-main" data-bind="if: place().rating != undefined">
-          <h1 data-bind="text: place().rating"></h1>
-          <stars params="className: 'star-oranges', rating: place().rating"></stars>
+      <!--  ko if: place().reviews && place().reviews.length > 0 -->
+      <section class="item-review">
+        <h3>Reviews</h3>
+        <div class="" data-bind="foreach: place().reviews">
+          <review-comment params="review: $data"></review-comment>
         </div>
-      </div>
-    </section>
-    <!-- /ko -->
+      </section>
+      <!-- /ko -->
 
-    <!--  ko if: place().reviews && place().reviews.length > 0 -->
-    <section class="item-review">
-      <h3>Reviews</h3>
-      <div class="" data-bind="foreach: place().reviews">
-        <review-comment params="review: $data"></review-comment>
-      </div>
-    </section>
-    <!-- /ko -->
-
+    </div>
   </div>
 </div>

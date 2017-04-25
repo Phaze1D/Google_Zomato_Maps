@@ -13,6 +13,7 @@ import { fakeResult } from '../../../fake.js';
 class ItemController {
   constructor(params) {
     this.place = params.place;
+    this.show = params.show;
     this.over = false
 
     this.onRequestBack = params.onRequestBack
