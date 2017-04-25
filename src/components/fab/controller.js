@@ -8,7 +8,8 @@ import { component } from 'utils/decorators';
 })
 class FABController {
   constructor(params) {
-    this.classes = "fab-wrapper " + params.className
-    this.icon = params.icon
+    this.classes = "fab-wrapper " + params.className;
+    this.icon = params.icon;
+    this.onClick = params.onClick;
   }
 }
