@@ -15,7 +15,10 @@ class GoogleMapController {
   constructor(params) {
     this.showMap = ko.observable(false);
     this.fetching = ko.observable(false);
-    this.place = ko.observable({reviews: []});
+    this.showResults = ko.observable(false);
+    this.showItem = ko.observable(false);
+    this.error = ko.observable('')
+    this.place = ko.observable();
     this.results = ko.observableArray();
     this.type = ko.observable(true);
     this.markers = [];
@@ -37,20 +40,17 @@ class GoogleMapController {
     this.onDetailCallback = this.onDetailCallback.bind(this);
     this.onErrorCallback  = this.onErrorCallback.bind(this);
     this.onGeoCallback    = this.onGeoCallback.bind(this);
+    this.onResponCallback = this.onResponCallback.bind(this);
+    this.handleRelocate   = this.handleRelocate.bind(this);
 
     this.type.subscribe(() => this.onResetCallback());
   }
 
-  showResults(show){
-    var resultsWrap = document.getElementById('results-wrapper');
-    resultsWrap.classList[show ? 'add' : 'remove']('show');
-  }
-
-  showItem(show){
-    var itemsWrap = document.getElementById('item-wrapper');
-    itemsWrap.classList[show ? 'add' : 'remove']('show');
+  showItemPanel(show){
+    this.showItem(show);
     document.getElementById('autocomplete-wrapper').style.top = show ? "80px" : '';
-    document.getElementById('item-above').scrollTop = 0;
+    let itemdiv = document.getElementById('item-above');
+    if(itemdiv) itemdiv.scrollTop = 0;
     this.mainMarker.showingItem = show;
   }
 
@@ -85,6 +85,11 @@ class GoogleMapController {
     this.markers = [];
   }
 
+  handleRelocate(){
+    this.fetching(true);
+    mapSingleton.relocate(() => this.fetching(false), this.onErrorCallback);
+  }
+
   onSubmitCallback(query){
     this.fetching(true);
     this.deleteMarkers();
@@ -100,13 +105,18 @@ class GoogleMapController {
   onResetCallback(){
     this.deleteMarkers();
     this.showResults(false);
-    this.showItem(false);
+    this.showItemPanel(false);
     this.hideMainMarker();
+  }
+
+  onResponCallback(){
+    this.showResults(!this.showResults());
+    this.showItem(false);
   }
 
   onBackCallback(){
     this.showResults(true);
-    this.showItem(false);
+    this.showItemPanel(false);
     this.hideMainMarker();
   }
 
@@ -143,16 +153,16 @@ class GoogleMapController {
     if(results.length > 0){
       mapSingleton.getMap().fitBounds(bounds);
     }
-    ko.utils.arrayPushAll(this.results, results)
+    ko.utils.arrayPushAll(this.results, results);
     this.fetching(false);
     this.showResults(true);
-    this.showItem(false);
+    this.showItemPanel(false);
   }
 
   onDetailCallback(detail){
-    this.place(detail)
+    this.place(detail);
     this.showResults(false);
-    this.showItem(true);
+    this.showItemPanel(true);
     this.fetching(false);
   }
 
@@ -161,6 +171,10 @@ class GoogleMapController {
   }
 
   onErrorCallback(error){
-    console.log(error);
+    if(this.error().length == 0){
+      setTimeout(() => this.error(''), 5000);
+    }
+    this.fetching(false);
+    this.error(error);
   }
 }

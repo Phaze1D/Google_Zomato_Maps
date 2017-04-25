@@ -18,3 +18,24 @@
 #google-map
   height: 100%
   width: 100%
+
+#error-box
+  height: 68px
+  width: 100%
+  max-width: 600px
+  padding: 16px
+  color: white
+  background-color: #323232
+  border-radius: 3px 3px 0 0
+  position: absolute
+  bottom: 0
+  left: 50%
+  transform: translate(-50%, 100%)
+  transition: 0.3s
+  box-shadow: 0 0 2px rgba(0,0,0,.12), 0 0 4px rgba(0,0,0,.24)
+
+  &.show
+    transform: translate(-50%, 0)
+
+  p
+    margin: 0
