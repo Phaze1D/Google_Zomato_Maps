@@ -6,7 +6,7 @@ import { component } from 'utils/decorators';
   template: require('./view.html')
 })
 /** KnockoutJS ViewModel that represents a Floating Action Button */
-class FABViewModel{
+class FABViewModel {
 
   /**
   * @constructor FABViewModel
