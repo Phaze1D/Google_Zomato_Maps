@@ -23,7 +23,7 @@ class AutoComplete {
   * @param {object} data - The data corresponding to the item that was clicked
   * @param {object} event - Click event
   */
-  handleItemClick(data, event){
+  handleItemClick(data, event) {
     data.icon = "schedule";
     this.onRequestItem(data);
   }
