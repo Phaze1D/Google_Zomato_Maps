@@ -1,6 +1,6 @@
-<div id="item-wrapper" class="left-panel">
+<div id="item-wrapper" data-bind="attr: {class: $parents[$parents.length - 2].type() ? 'left-panel google' : 'left-panel yelp'}">
   <a class="item-back" href="#" data-bind="click: handleBack">Back to results</a>
-  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + place().photo + ')'}"></div>
+  <div class="item-img" data-bind="attr: {style: 'background-image: url(' + place().cover + ')'}"></div>
   <div id="item-search-background"></div>
 
   <div id="item-above" data-bind="event: {scroll: handleScroll}">
@@ -35,17 +35,17 @@
     <section class="item-info">
       <p data-bind="text: place().description"></p>
       <ul>
-        <li class="item-info-item" data-bind="visible: place().formatted_address">
+        <li class="item-info-item" data-bind="visible: place().address">
           <i class="material-icons">place</i>
-          <span data-bind="text: place().formatted_address"></span>
+          <span data-bind="text: place().address"></span>
         </li>
-        <li class="item-info-item" data-bind="visible: place().formatted_phone_number">
+        <li class="item-info-item" data-bind="visible: place().phone">
           <i class="material-icons">phone</i>
-          <span data-bind="text: place().formatted_phone_number"></span>
+          <span data-bind="text: place().phone"></span>
         </li>
         <li class="item-info-item">
           <i class="material-icons">schedule</i>
-          <span data-bind="text: place().open ? 'Opened' : 'Closed'"></span>
+          <span data-bind="text: place().opened ? 'Opened' : 'Closed'"></span>
         </li>
       </ul>
     </section>
@@ -77,7 +77,7 @@
     </section>
     <!-- /ko -->
 
-    <!--  ko if: place().reviews -->
+    <!--  ko if: place().reviews && place().reviews.length > 0 -->
     <section class="item-review">
       <h3>Reviews</h3>
       <div class="" data-bind="foreach: place().reviews">
