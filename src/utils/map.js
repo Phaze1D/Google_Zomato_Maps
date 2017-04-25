@@ -2,7 +2,8 @@ import GoogleMapsLoader from 'google-maps'
 
 class MapSingleton {
   constructor() {
-    this.map = ''
+    this.map = null;
+    this.geocoder = null;
     GoogleMapsLoader.KEY = 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
     GoogleMapsLoader.LIBRARIES = ['places'];
   }
@@ -13,8 +14,7 @@ class MapSingleton {
   }
 
   __initLoad(google){
-    // this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    this.__initMap(google, {lat: 20.6724354, lng: -103.3796223});
+    this.__initMap(google, {lat: 33.9955633, lng: -118.1491274});
     // if(navigator.geolocation){
     //   navigator.geolocation.getCurrentPosition((position) => {
     //     var pos = {
@@ -36,6 +36,7 @@ class MapSingleton {
 
   __initMap(google, pos){
     this.onLoadRequest();
+    this.geocoder = new google.maps.Geocoder();
     this.map = new google.maps.Map(document.getElementById('google-map'), {
       center: pos,
       scrollwheel: false,
