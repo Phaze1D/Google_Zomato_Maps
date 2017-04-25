@@ -8,12 +8,14 @@
   height: 31px
   background-color: white
   box-shadow: 0 1px 2px rgba(0,0,0,0.2)
-  color: #3A84DF
   border-top: 1px solid #E6E6E6
   border-radius: 0 0 2px 2px
   font-size: 12px
   text-decoration: none
   padding: 8px 16px
+
+  @media screen and (max-width: 751px)
+    width: calc(100% - 14px)
 
 .item-img
   width: 100%
@@ -27,7 +29,6 @@
 .item-header
   position: relative
   height: 112px
-  background-color: #4285F4
   color: white
   padding: 20px 18px
 
@@ -58,8 +59,6 @@
   right: 23px
   background-color: white
   transform: translateY(-50%)
-  i
-    color: #4285F4
 
 
 .item-options
@@ -67,7 +66,6 @@
   background-color: white
   display: flex
   justify-content: space-between
-  color: #3A84DF
   border-top: 1px solid #eee
 
   a
@@ -108,7 +106,6 @@
   -webkit-font-smoothing: antialiased
 
   i
-    color: #4285F4
     font-size: 20px
     margin-right: 26px
 
@@ -183,7 +180,6 @@
   position: absolute
   top: 0
   left: 0
-  background-color: #4285F4
   width: 100%
   height: 64px
   z-index: 20
@@ -197,3 +193,49 @@
   max-height: 100%
   padding-top: 30vh
   overflow-y: scroll
+  width: 100%
+
+
+
+.yelp
+  .item-back
+    color: #d32323
+
+  .item-header
+    background-color: #d32323
+
+  .item-fab i
+    color: #d32323
+
+  .item-options
+    color: #d32323
+
+  .item-info-item i
+    color: #d32323
+
+  // .item-img
+  //  -webkit-filter: grayscale(100%); filter: grayscale(100%)
+
+  #item-search-background
+    background-color: #d32323
+
+
+
+.google
+  .item-back
+    color: #4285F4
+
+  .item-header
+    background-color: #4285F4
+
+  .item-fab i
+    color: #4285F4
+
+  .item-options
+    color: #4285F4
+
+  .item-info-item i
+    color: #4285F4
+
+  #item-search-background
+    background-color: #4285F4
