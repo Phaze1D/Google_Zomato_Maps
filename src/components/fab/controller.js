@@ -1,4 +1,3 @@
-import ko from 'knockout';
 import { component } from 'utils/decorators';
 
 
@@ -6,7 +5,16 @@ import { component } from 'utils/decorators';
   name: 'fab',
   template: require('./view.html')
 })
-class FABController {
+/** KnockoutJS ViewModel that represents a Floating Action Button */
+class FABViewModel{
+
+  /**
+  * @constructor FABViewModel
+  * @param {string} className - The class names to be added in addition
+  * to the default
+  * @param {string} icon - The material design icon to use
+  * @param {function} onClick - The click event handler
+  */
   constructor(params) {
     this.classes = "fab-wrapper " + params.className;
     this.icon = params.icon;
