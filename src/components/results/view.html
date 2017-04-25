@@ -1,30 +1,32 @@
-<div id="results-wrapper" data-bind="attr: {class: $parents[$parents.length - 2].type() ? 'left-panel google' : 'left-panel yelp'}">
-  <div class="results-top"></div>
-  <ul class="results-list" data-bind="foreach: results">
-    <li class="results-item" data-bind="click: $parent.handleItemClick, event: {mouseenter: $parent.handleMouseIn, mouseleave: $parent.handleMouseOut}">
-      <div class="results-info">
-        <div class="results-title text-ellipsis" data-bind="text: name">
-        </div>
+<div id="results-wrapper" data-bind="attr: {class: show() ? 'left-panel show' : 'left-panel'}">
+  <div data-bind="attr: {class: $parents[$parents.length - 2].type() ? 'google' : 'yelp'}">
+    <div class="results-top"></div>
+    <ul class="results-list" data-bind="foreach: results">
+      <li class="results-item" data-bind="click: $parent.handleItemClick, event: {mouseenter: $parent.handleMouseIn, mouseleave: $parent.handleMouseOut}">
+        <div class="results-info">
+          <div class="results-title text-ellipsis" data-bind="text: name">
+          </div>
 
-        <div class="results-review stars-div text-ellipsis" data-bind="visible: rating">
-          <span class="span-main" data-bind="text: rating"></span>
-          <stars params="className: 'star-oranges', rating: rating"></stars>
-        </div>
+          <div class="results-review stars-div text-ellipsis" data-bind="visible: rating">
+            <span class="span-main" data-bind="text: rating"></span>
+            <stars params="className: 'star-oranges', rating: rating"></stars>
+          </div>
 
-        <div class="results-sub text-ellipsis" data-bind="text: type">
-        </div>
+          <div class="results-sub text-ellipsis" data-bind="text: type">
+          </div>
 
-        <div class="results-sub text-ellipsis" data-bind="text: address">
-        </div>
+          <div class="results-sub text-ellipsis" data-bind="text: address">
+          </div>
 
-        <div class="results-sub text-ellipsis" data-bind="text: (open ? 'Opened' : 'Closed')">
+          <div class="results-sub text-ellipsis" data-bind="text: (open ? 'Opened' : 'Closed')">
+          </div>
         </div>
-      </div>
-      <div  class="results-img" data-bind="style: {backgroundImage: 'url('+thumb+')'}"> </div>
-    </li>
-  </ul>
+        <div  class="results-img" data-bind="style: {backgroundImage: 'url('+thumb+')'}"> </div>
+      </li>
+    </ul>
 
-  <!--  ko if: results().length == 0 && !fetching()-->
-    <img class="empty-img" src="https://s-media-cache-ak0.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png" alt="empty state">
-  <!--  /ko -->
+    <!--  ko if: results().length == 0 && !fetching()-->
+      <img class="empty-img" src="https://s-media-cache-ak0.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png" alt="empty state">
+    <!--  /ko -->
+  </div>
 </div>

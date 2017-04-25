@@ -14,6 +14,7 @@ class ResultsController {
     this.onRequestOut = params.onRequestOut;
     this.results = params.results;
     this.fetching = params.fetching;
+    this.show = params.show;
 
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
