@@ -5,7 +5,7 @@ import { component } from "utils/decorators";
   name: "autocomplete",
   template: require("./view.html")
 })
-/** KnockoutJS Component that represents the auto complete list */
+/** KnockoutJS ViewModel that represents the auto complete list */
 class AutoComplete {
 
   /**

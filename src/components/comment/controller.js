@@ -5,7 +5,7 @@ import { component } from 'utils/decorators';
   name: 'review-comment',
   template: require('./view.html')
 })
-/** KnockoutJS Component that represents the comment section */
+/** KnockoutJS ViewModel that represents the comment section */
 class CommentController {
 
   /**
