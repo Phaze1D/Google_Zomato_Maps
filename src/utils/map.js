@@ -14,24 +14,23 @@ class MapSingleton {
   }
 
   __initLoad(google){
-    this.__initMap(google, {lat: 33.9955633, lng: -118.1491274});
-    // if(navigator.geolocation){
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     var pos = {
-    //       lat: position.coords.latitude,
-    //       lng: position.coords.longitude
-    //     };
-    //     this.__initMap(google, pos)
-    //
-    //   }, () => {
-    //     this.handleError();
-    //     this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    //   });
-    //
-    // }else{
-    //   this.handleError();
-    //   this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    // }
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position) => {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        this.__initMap(google, pos)
+
+      }, () => {
+        this.handleError();
+        this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
+      });
+
+    }else{
+      this.handleError();
+      this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
+    }
   }
 
   __initMap(google, pos){
@@ -43,7 +42,7 @@ class MapSingleton {
       zoom: 10,
       zoomControl: true,
       zoomControlOptions: {
-        position: google.maps.ControlPosition.TOP_RIGHT
+        position: google.maps.ControlPosition.RIGHT_CENTER
       },
       disableDefaultUI: true
     });
@@ -59,6 +58,24 @@ class MapSingleton {
 
   getKey(){
     return 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
+  }
+
+  relocate(success, failed){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position) => {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        this.map.setCenter(pos)
+        success();
+      }, (error) => {
+        failed(error.message);
+      });
+
+    }else{
+      failed('Unknown Error');
+    }
   }
 }
 
