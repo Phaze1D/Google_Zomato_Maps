@@ -37,10 +37,19 @@
   background-color: transparent
   padding: 0 14px 0 15px
   box-sizing: content-box
+
   i
     display: block
     color: #666666
     width: 24px
+
+  img
+    border-radius: 12px
+    width: 24px
+    backface-visibility: hidden
+    position: absolute
+    top: 0
+    left: 0
 
 
 .search-button-right
@@ -60,3 +69,19 @@
   color: #212121
   background-color: transparent
   text-overflow: ellipsis
+
+
+// The flip animation was taken from https://davidwalsh.name/css-flip
+
+.flipper
+  height: 100%
+  transition: 0.6s
+  transform-style: preserve-3d
+  position: relative
+
+.front
+  z-index: 2
+  transform: rotateY(0deg)
+
+.back
+  transform: rotateY(180deg)
