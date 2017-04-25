@@ -1,9 +1,15 @@
 <div class="search-wrapper">
   <button class="search-button" type="button" data-bind="click: function() { $data.handleFlip($parents[$parents.length - 2]) }">
+    <!--  ko if: responsive() -->
+      <i class="material-icons">arrow_backward</i>
+    <!-- /ko -->
+
+    <!--  ko if: !responsive() -->
     <div class="flipper" data-bind="style: {transform: $parents[$parents.length - 2].type() ? 'rotateY(0deg)' : 'rotateY(180deg)'}">
       <img class="front" src="https://i.stack.imgur.com/Ga0da.png" alt="google-logo">
       <img class="back" src="https://b.zmtcdn.com/images/logo/zomato.jpg" alt="yelp-logo">
     </div>
+    <!-- /ko -->
   </button>
 
   <div class="search-holder" data-bind="visible: showHolder()">
@@ -12,7 +18,7 @@
 
   <form data-bind="submit: handleSubmit">
     <input id="search-input" type="text" name="" value="" autocomplete="off"
-           data-bind="textInput: searchValue, event: {focusin: handleFocusIn, focusout: handleFocusOut}">
+        data-bind="textInput: searchValue, event: {focusin: handleFocusIn, focusout: handleFocusOut}">
     <button class="search-button-right" type="submit" data-bind="visible: !fetching() && !showHolder() && !showClear()">
       <i class="material-icons">arrow_forward</i>
     </button>
@@ -20,7 +26,7 @@
     <button class="search-button-right" type="reset" data-bind="{event: {mousedown: handleReset}, visible: !fetching() && !showHolder() && showClear()}">
       <i class="material-icons">clear</i>
     </button>
-    <spinner params="width: 20, strokeWidth: 4, classes: 'search-spinner'" data-bind="visible: fetching()"></spinner>
+    <spinner params="width: 24, strokeWidth: 5, classes: 'search-spinner'" data-bind="visible: fetching()"></spinner>
   </form>
   <autocomplete params="onRequestItem: onItemCallback" data-bind="visible: showAuto()">
   </autocomplete>

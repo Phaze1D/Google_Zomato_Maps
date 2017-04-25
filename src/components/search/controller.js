@@ -13,21 +13,27 @@ class SearchController {
   constructor(params) {
     this.onRequestSubmit = params.onRequestSubmit;
     this.onRequestReset = params.onRequestReset;
-    this.fetching = params.fetching
+    this.onRequestBack = params.onRequestBack;
+    this.onErrorRequest = params.onErrorRequest;
+    
+    this.fetching = params.fetching;
     this.didSubmit = false;
     this.showHolder = ko.observable(true);
     this.showClear = ko.observable(true);
     this.showAuto = ko.observable(false);
+    this.responsive = ko.observable(false);
     this.searchValue = ko.observable("");
-    this.autoList = ko.observableArray();
 
     this.handleInputChanged = this.handleInputChanged.bind(this);
+    this.handleResize       = this.handleResize.bind(this);
     this.onItemCallback     = this.onItemCallback.bind(this);
     this.onAutoCallback     = this.onAutoCallback.bind(this);
 
     var shis = JSON.parse(localStorage.getItem('searchHistory'));
     this.autoList = ko.observableArray(shis);
     this.searchValue.subscribe(this.handleInputChanged);
+
+    window.addEventListener('resize',this.handleResize)
   }
 
   addFront(value){
@@ -71,15 +77,27 @@ class SearchController {
     }
   }
 
+  handleResize(){
+    if(window.innerWidth < 751 && !this.responsive() && this.didSubmit){
+      this.responsive(true);
+    }else if(window.innerWidth > 751 && this.responsive()){
+      this.responsive(false);
+    }
+  }
+
   handleFlip(root){
-    root.type(!root.type());
-    this.showClear(false);
+    if(this.responsive()){
+      this.onRequestBack();
+    }else{
+      root.type(!root.type());
+      this.showClear(false);
+    }
   }
 
   handleInputChanged(newValue){
     this.didSubmit = false;
     if(newValue && newValue.trim().length > 0){
-      googleAutocompleteAPI(newValue, this.onAutoCallback);
+      googleAutocompleteAPI(newValue, this.onAutoCallback, this.onErrorRequest);
     }else{
       this.resetHistory()
     }
@@ -107,16 +125,22 @@ class SearchController {
       var value = ref ? ref : this.convertValue(this.searchValue());
       this.onRequestSubmit(this.searchValue());
 
+      if(window.innerWidth < 751){
+        this.responsive(true);
+      }
+
       if(createNew){
         this.updateLocalStorage(value);
       }
 
     }else{
+      this.responsive(false);
       this.onRequestReset();
     }
   }
 
   handleReset(data, event){
+    this.responsive(false);
     this.didSubmit = false;
     document.getElementById('search-input').blur();
     this.searchValue('')
