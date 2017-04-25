@@ -3,7 +3,10 @@
     <h4 data-bind="text: review.author_name"></h4>
 
     <p class="comment-text">
+      <!--  ko if: review.rating > 0 -->
       <stars params="className: 'star-oranges', rating: review.rating"></stars>
+      <!--  /ko -->
+
       <!--  ko text: review.text-->
       <!--  /ko -->
     </p>
