@@ -6,7 +6,7 @@ import { component } from 'utils/decorators';
   template: require('./view.html')
 })
 /** KnockoutJS ViewModel that represents the comment section */
-class CommentController {
+class CommentViewModel {
 
   /**
   * @constructor CommentController
