@@ -1,7 +1,7 @@
 import ko from 'knockout';
 import { component } from 'utils/decorators';
 import { mapSingleton } from 'utils/map';
-import { autoCompleteRequest } from 'actions/action';
+import { googleAutocompleteAPI } from 'utils/google_tools';
 
 
 
@@ -21,15 +21,13 @@ class SearchController {
     this.searchValue = ko.observable("");
     this.autoList = ko.observableArray();
 
-
     this.handleInputChanged = this.handleInputChanged.bind(this);
-    this.onItemCallback = this.onItemCallback.bind(this);
-    this.onAutoRequestCallback = this.onAutoRequestCallback.bind(this);
+    this.onItemCallback     = this.onItemCallback.bind(this);
+    this.onAutoCallback     = this.onAutoCallback.bind(this);
 
     var shis = JSON.parse(localStorage.getItem('searchHistory'));
     this.autoList = ko.observableArray(shis);
-
-    this.searchValue.subscribe(this.handleInputChanged)
+    this.searchValue.subscribe(this.handleInputChanged);
   }
 
   addFront(value){
@@ -73,15 +71,15 @@ class SearchController {
     }
   }
 
+  handleFlip(root){
+    root.type(!root.type());
+    this.showClear(false);
+  }
+
   handleInputChanged(newValue){
     this.didSubmit = false;
-    var params = {
-      input: newValue,
-      location: mapSingleton.getCenter(),
-      radius: 2000
-    };
     if(newValue && newValue.trim().length > 0){
-      autoCompleteRequest(params, this.onAutoRequestCallback);
+      googleAutocompleteAPI(newValue, this.onAutoCallback);
     }else{
       this.resetHistory()
     }
@@ -107,7 +105,7 @@ class SearchController {
 
     if(this.searchValue() && this.searchValue().length > 0){
       var value = ref ? ref : this.convertValue(this.searchValue());
-      this.onRequestSubmit(value);
+      this.onRequestSubmit(this.searchValue());
 
       if(createNew){
         this.updateLocalStorage(value);
@@ -133,23 +131,16 @@ class SearchController {
     this.handleSubmit(null, !value.recent, value);
   }
 
-  onAutoRequestCallback(array, status){
-    if(status === 'OK'){
-      for (var i = 0; i < array.length; i++) {
-        var icon = 'place'
-        if(!array[i].types){
-          icon = 'search'
-        }
-        this.addFront({
-          icon: icon,
-          main: array[i].structured_formatting.main_text,
-          sub: array[i].structured_formatting.secondary_text || '',
-          recent: false,
-          place_id: array[i].place_id
-        })
-      }
-    }else{
-      console.log(status);
-    }
+  onAutoCallback(results){
+    results.forEach((result) => {
+      var icon = result.types ? 'place' : 'search';
+      this.addFront({
+        icon: icon,
+        main: result.structured_formatting.main_text,
+        sub: result.structured_formatting.secondary_text || '',
+        recent: false,
+        place_id: result.place_id
+      });
+    });
   }
 }
