@@ -1,7 +1,8 @@
 import ko from 'knockout';
 import { component } from 'utils/decorators';
 import { mapSingleton } from 'utils/map';
-import { searchTextRequest, googlePlaceDetailRequest } from 'actions/action';
+import { googleSearchAPI, googleDetailAPI, googleGeoCoder } from 'utils/google_tools';
+import { zomatoSearchAPI, zomatoDetailAPI } from 'utils/zomato_tools';
 
 
 
@@ -14,16 +15,30 @@ class GoogleMapController {
   constructor(params) {
     this.showMap = ko.observable(false);
     this.fetching = ko.observable(false);
-    this.place = ko.observable({});
+    this.place = ko.observable({reviews: []});
     this.results = ko.observableArray();
-    mapSingleton.load(this.onMapLoadCallback.bind(this));
+    this.type = ko.observable(true);
+    this.markers = [];
+    this.mainMarker = null;
 
-    this.onSearchSubmitCallback = this.onSearchSubmitCallback.bind(this);
-    this.onSearchResetCallback = this.onSearchResetCallback.bind(this);
-    this.onItemCallback = this.onItemCallback.bind(this);
-    this.onItemBackCallback = this.onItemBackCallback.bind(this);
-    this.onSearchTextCallback = this.onSearchTextCallback.bind(this);
-    this.onGoogleItemCallback = this.onGoogleItemCallback.bind(this);
+    mapSingleton.load(() => {
+      this.mainMarker = new google.maps.Marker({});
+      this.mainMarker.showingItem = false;
+      this.showMap(true)
+    });
+
+    this.onSubmitCallback = this.onSubmitCallback.bind(this);
+    this.onResetCallback  = this.onResetCallback.bind(this);
+    this.onBackCallback   = this.onBackCallback.bind(this);
+    this.onItemCallback   = this.onItemCallback.bind(this);
+    this.onItemMouseIn    = this.onItemMouseIn.bind(this);
+    this.onItemMouseOut   = this.onItemMouseOut.bind(this);
+    this.onSearchCallback = this.onSearchCallback.bind(this);
+    this.onDetailCallback = this.onDetailCallback.bind(this);
+    this.onErrorCallback  = this.onErrorCallback.bind(this);
+    this.onGeoCallback    = this.onGeoCallback.bind(this);
+
+    this.type.subscribe(() => this.onResetCallback());
   }
 
   showResults(show){
@@ -35,66 +50,117 @@ class GoogleMapController {
     var itemsWrap = document.getElementById('item-wrapper');
     itemsWrap.classList[show ? 'add' : 'remove']('show');
     document.getElementById('autocomplete-wrapper').style.top = show ? "80px" : '';
+    document.getElementById('item-above').scrollTop = 0;
+    this.mainMarker.showingItem = show;
   }
 
-  handleError(){
-
+  showMainMarker(location){
+    this.mainMarker.setPosition(location);
+    this.mainMarker.setMap(mapSingleton.getMap());
   }
 
-  onMapLoadCallback(){
-    this.showMap(true);
+  hideMainMarker(){
+    if(!this.mainMarker.showingItem){
+      this.mainMarker.setMap(null);
+      this.mainMarker.setAnimation(null);
+    }
   }
 
-  onSearchSubmitCallback(value){
-    var params = {
-      keyword: value.main + (value.sub ? ", " + value.sub : ''),
-      location: mapSingleton.getCenter(),
-      radius: 2000
-    };
+  addMarker(place){
+    let marker = new google.maps.Marker({
+      map: mapSingleton.getMap(),
+      position: place.geometry.location,
+      icon: {
+        url: 'https://developers.google.com/maps/documentation/javascript/images/circle.png',
+        anchor: new google.maps.Point(5, 5),
+        scaledSize: new google.maps.Size(10, 17)
+      }
+    });
+    google.maps.event.addListener(marker, 'click', () => this.onItemCallback(place));
+    this.markers.push(marker);
+  }
+
+  deleteMarkers(){
+    this.markers.forEach((marker) => marker.setMap(null));
+    this.markers = [];
+  }
+
+  onSubmitCallback(query){
     this.fetching(true);
-    searchTextRequest(params, this.onSearchTextCallback);
+    this.deleteMarkers();
     this.results.removeAll();
+
+    if(this.type()){
+      googleSearchAPI(query, this.onSearchCallback, this.onErrorCallback);
+    }else{
+      zomatoSearchAPI(query, this.onSearchCallback, this.onErrorCallback);
+    }
   }
 
-  onSearchResetCallback(){
+  onResetCallback(){
+    this.deleteMarkers();
     this.showResults(false);
     this.showItem(false);
+    this.hideMainMarker();
   }
 
-  onItemCallback(data){
-    this.fetching(true);
-    googlePlaceDetailRequest({placeId: data.place_id}, this.onGoogleItemCallback)
-  }
-
-  onItemBackCallback(){
+  onBackCallback(){
     this.showResults(true);
     this.showItem(false);
+    this.hideMainMarker();
   }
 
-  onSearchTextCallback(results, status){
-    for (var i = 0; i < results.length; i++) {
-      this.results.push({
-        place_id: results[i].place_id,
-        title: results[i].name,
-        rating: results[i].rating,
-        type: results[i].types ? results[i].types[0].replace("_", " ") : '',
-        address: results[i].vicinity,
-        open: results[i].opening_hours ? results[i].opening_hours.open_now : false,
-        picture: results[i].photos ? results[i].photos[0].getUrl({'maxWidth': 160, 'maxHeight': 160}) : 'https://maps.gstatic.com/tactile/omnibox/list-result-no-thumbnail-1x.png',
-      })
+  onItemCallback(item){
+    if(this.type()){
+      googleDetailAPI(item.id, this.onDetailCallback, this.onErrorCallback);
+    }else{
+      zomatoDetailAPI(item.id, this.onDetailCallback, this.onErrorCallback);
     }
+    this.showMainMarker(item.geometry.location);
+    this.mainMarker.setAnimation(google.maps.Animation.BOUNCE);
+    this.fetching(true);
+  }
+
+  onItemMouseIn(detail){
+    this.showMainMarker(detail.geometry.location);
+  }
+
+  onItemMouseOut(){
+    this.hideMainMarker();
+  }
+
+  onSearchCallback(results){
+    let bounds = new google.maps.LatLngBounds();
+    results.forEach((result) => {
+      if(result.geometry.location.lat != 0 && result.geometry.location.lng != 0){
+        this.addMarker(result);
+        bounds.extend(result.geometry.location);
+      }else{
+        googleGeoCoder(result.address, this.onGeoCallback, this.onErrorCallback);
+      }
+    });
+
+    if(results.length > 0){
+      mapSingleton.getMap().fitBounds(bounds);
+    }
+    ko.utils.arrayPushAll(this.results, results)
     this.fetching(false);
     this.showResults(true);
     this.showItem(false);
   }
 
-  onGoogleItemCallback(place, status){
-    place.type = place.types ? place.types[0].replace("_", " ") : '';
-    place.photo = place.photos ? place.photos[0].getUrl({'maxWidth': 400}) : 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png';
-    place.open = place.opening_hours ? place.opening_hours.open_now : false
-    this.place(place);
+  onDetailCallback(detail){
+    this.place(detail)
     this.showResults(false);
     this.showItem(true);
     this.fetching(false);
+  }
+
+  onGeoCallback(result){
+    this.addMarker(result);
+  }
+
+  onErrorCallback(error){
+    console.log(error);
   }
 }
