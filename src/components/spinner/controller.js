@@ -1,4 +1,3 @@
-import ko from 'knockout';
 import { component } from 'utils/decorators';
 
 
