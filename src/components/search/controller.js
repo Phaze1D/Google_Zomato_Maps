@@ -35,11 +35,11 @@ class SearchViewModel {
     this.fetching = params.fetching;
 
     this.didSubmit = false;
-    this.showHolder = ko.observable(true);
+    this.showHolder = ko.observable(false);
     this.showClear = ko.observable(true);
     this.showAuto = ko.observable(false);
     this.responsive = ko.observable(false);
-    this.searchValue = ko.observable("");
+    this.searchValue = ko.observable("pizza");
 
     // Binding event handlers
     this.handleInputChanged = this.handleInputChanged.bind(this);
@@ -247,7 +247,7 @@ class SearchViewModel {
   /**
   * Called when the google autocomplete api is successful
   * Adds a new array to the autoList
-  * @param {array} results - The results of the autocomplete api 
+  * @param {array} results - The results of the autocomplete api
   */
   onAutoCallback(results) {
     results.forEach((result) => {
