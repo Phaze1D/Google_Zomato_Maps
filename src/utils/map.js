@@ -1,6 +1,13 @@
 import GoogleMapsLoader from 'google-maps'
 
+/** Class that represents single google map */
 class MapSingleton {
+
+  /**
+  * @constructor MapSingleton
+  * @member {google.maps.Map} map
+  * @member {google.maps.Geocoder} geocoder
+  */
   constructor() {
     this.map = null;
     this.geocoder = null;
@@ -8,13 +15,22 @@ class MapSingleton {
     GoogleMapsLoader.LIBRARIES = ['places'];
   }
 
-  load(onLoadRequest, onErrorRequest){
-    this.onLoadRequest = onLoadRequest;
+  /**
+  * Loads the google javascript library and initializes the map
+  * @param {function} onRequestLoad - Callback for successful load
+  * @param {function} onRequestError - Callback for failed load
+  */
+  load(onRequestLoad, onRequestError) {
+    this.onRequestLoad = onRequestLoad;
     GoogleMapsLoader.load(this.__initLoad.bind(this));
   }
 
-  __initLoad(google){
-    if(navigator.geolocation){
+  /**
+  * Private function that gets that user location
+  * @param {object} google - The google javascript object
+  */
+  __initLoad(google) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         var pos = {
           lat: position.coords.latitude,
@@ -27,14 +43,19 @@ class MapSingleton {
         this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
       });
 
-    }else{
+    } else {
       this.handleError();
       this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
     }
   }
 
-  __initMap(google, pos){
-    this.onLoadRequest();
+  /**
+  * Private function that initializes the map
+  * @param {object} google - The google javascript object
+  * @param {object} pos - The maps init center position
+  */
+  __initMap(google, pos) {
+    this.onRequestLoad();
     this.geocoder = new google.maps.Geocoder();
     this.map = new google.maps.Map(document.getElementById('google-map'), {
       center: pos,
@@ -48,20 +69,32 @@ class MapSingleton {
     });
   }
 
-  getMap(){
+  /**
+  * @return The initialized map
+  */
+  getMap() {
     return this.map;
   }
 
-  getCenter(){
+  /**
+  * @return The map center
+  */
+  getCenter() {
     return this.map.getCenter()
   }
 
-  getKey(){
+  /**
+  * @return The google api key
+  */
+  getKey() {
     return 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
   }
 
-  relocate(success, failed){
-    if(navigator.geolocation){
+  /**
+  * Finds the current users location
+  */
+  relocate(success, failed) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         var pos = {
           lat: position.coords.latitude,
@@ -73,7 +106,7 @@ class MapSingleton {
         failed(error.message);
       });
 
-    }else{
+    } else {
       failed('Unknown Error');
     }
   }

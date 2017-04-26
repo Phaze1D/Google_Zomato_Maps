@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { mapSingleton } from 'utils/map';
 
-
 const ZOMATO_KEY = 'f298bdd01d0c9561dacc373c6bee7a68';
 const DEFAULT_THUMB = 'https://maps.gstatic.com/tactile/omnibox/list-result-no-thumbnail-1x.png';
 const DEFAULT_COVER = 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png';
 
+/**
+* Functions that calls the Zomato Search Complete API
+* @param {string} query - The search query
+* @param {function} success - The callback function called if successful
+* @param {function} failed - The callback function called if failed
+*/
 export let zomatoSearchAPI = function(query, success, failed) {
   let params = {
     q: query,
@@ -26,6 +31,12 @@ export let zomatoSearchAPI = function(query, success, failed) {
   });
 }
 
+/**
+* Functions that calls the Zomato Place API
+* @param {number} id - The id of the place
+* @param {function} success - The callback function called if successful
+* @param {function} failed - The callback function called if failed
+*/
 export let zomatoDetailAPI = function (id, success, failed) {
 
   axios.all([zomatoSingleAPI(id), zomatoReviewsAPI(id)])
@@ -37,6 +48,11 @@ export let zomatoDetailAPI = function (id, success, failed) {
   })
 }
 
+/**
+* Functions that calls the Zomato Place API
+* @param {number} id - The id of the place
+* @return {Promise}
+*/
 let zomatoSingleAPI = function (id) {
   let params = {res_id: id};
   return axios.get('https://developers.zomato.com/api/v2.1/restaurant', {
@@ -48,7 +64,11 @@ let zomatoSingleAPI = function (id) {
   })
 }
 
-
+/**
+* Functions that calls the Zomato Place Reviews API
+* @param {number} id - The id of the place
+* @return {Promise}
+*/
 let zomatoReviewsAPI = function (id) {
   let params = {res_id: id};
   return axios.get('https://developers.zomato.com/api/v2.1/reviews', {
@@ -60,7 +80,12 @@ let zomatoReviewsAPI = function (id) {
   })
 }
 
-
+/**
+* Formats the results from the zomato's search api call so that it can be used
+* in the ResultViewModel
+* @param {array} results - The zomato search api results
+* @return {array} A formated results array
+*/
 let formatResults = function (results) {
   let formated = results.map((result) => {
     let rating = Number(result.restaurant.user_rating.aggregate_rating);
@@ -83,6 +108,12 @@ let formatResults = function (results) {
   return formated;
 }
 
+/**
+* Formats the result from the zomato's place api call so that it can be used
+* in the ItemViewModel
+* @param {object} result - The zomato place api result
+* @return {object} A formated result
+*/
 let formatPlace = function (result) {
   let rating = Number(result.user_rating.aggregate_rating);
   let place =  {
