@@ -2,16 +2,25 @@ import ko from 'knockout';
 import { component } from 'utils/decorators';
 
 
-
 @component({
   name: 'stars',
   template: require('./view.html')
 })
-class StarsController {
+/** KnockoutJS ViewModel that represents the Stars */
+class StarsViewModel {
+
+  /**
+  * @constructor StarsViewModel
+  * @param {number} total - The total number of stars
+  * @param {string} className - The stars class
+  *
+  * @member {computed} ratingComp
+  */
   constructor(params) {
     this.total = params.total ? params.total : 5;
     this.className = params.className;
 
+    // This is need because params.rating can be a number or a observable
     this.ratingComp = ko.computed(() => {
       return typeof params.rating === 'function' ? params.rating() : params.rating;
     });
