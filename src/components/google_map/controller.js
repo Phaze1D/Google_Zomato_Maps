@@ -5,8 +5,6 @@ import { googleSearchAPI, googleDetailAPI, googleGeoCoder } from 'utils/google_t
 import { zomatoSearchAPI, zomatoDetailAPI } from 'utils/zomato_tools';
 
 
-
-
 @component({
   name: 'google-map',
   template: require('./view.html')
