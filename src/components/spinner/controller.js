@@ -6,7 +6,15 @@ import { component } from 'utils/decorators';
   name: 'spinner',
   template: require('./view.html')
 })
-class SpinnerController {
+/** KnockoutJS ViewModel that represents the Spinner */
+class SpinnerViewModel {
+
+  /**
+  * @constructor SpinnerViewModel
+  * @param {string} classes - The classes to added
+  * @param {number} width - The spinner width
+  * @param {numbe} strokeWidth - The spinner strokeWidth
+  */
   constructor(params) {
     this.classes = "loader " + params.classes;
     this.width = params.width ? `${params.width}px` : '100px';
