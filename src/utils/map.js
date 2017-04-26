@@ -20,33 +20,9 @@ class MapSingleton {
   * @param {function} onRequestLoad - Callback for successful load
   * @param {function} onRequestError - Callback for failed load
   */
-  load(onRequestLoad, onRequestError) {
+  load(onRequestLoad) {
     this.onRequestLoad = onRequestLoad;
-    GoogleMapsLoader.load(this.__initLoad.bind(this));
-  }
-
-  /**
-  * Private function that gets that user location
-  * @param {object} google - The google javascript object
-  */
-  __initLoad(google) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        this.__initMap(google, pos)
-
-      }, () => {
-        this.handleError();
-        this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
-      });
-
-    } else {
-      this.handleError();
-      this.__initMap(google, {lat: -7.1562833, lng: 110.0800594});
-    }
+    GoogleMapsLoader.load(this.__initMap.bind(this));
   }
 
   /**
@@ -54,11 +30,11 @@ class MapSingleton {
   * @param {object} google - The google javascript object
   * @param {object} pos - The maps init center position
   */
-  __initMap(google, pos) {
+  __initMap(google) {
     this.onRequestLoad();
     this.geocoder = new google.maps.Geocoder();
     this.map = new google.maps.Map(document.getElementById('google-map'), {
-      center: pos,
+      center: {lat: 37.425713 , lng: -122.1703695},
       scrollwheel: false,
       zoom: 10,
       zoomControl: true,
