@@ -1,13 +1,22 @@
-import ko from 'knockout';
 import { component } from 'utils/decorators';
 
-import { fakeResult } from '../../../fake.js'
 
 @component({
   name: 'results',
   template: require('./view.html')
 })
-class ResultsController {
+/** KnockoutJS ViewModel that represents the Results Panel */
+class ResultsViewModel {
+
+  /**
+  * @constructor ResultsViewModel
+  * @param {function} onRequestItem - Callback
+  * @param {function} onRequestIn - Callback
+  * @param {function} onRequestOut - Callback
+  * @param {observableArray} results - The observableArray of results
+  * @param {observable} fetching - Observable boolean
+  * @param {observable} show - Observable boolean
+  */
   constructor(params) {
     this.onRequestItem = params.onRequestItem;
     this.onRequestIn = params.onRequestIn;
@@ -16,20 +25,36 @@ class ResultsController {
     this.fetching = params.fetching;
     this.show = params.show;
 
+    // Binding event functions
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
   }
 
-  handleItemClick(data, event){
-    this.onRequestItem(data)
+  /**
+  * Click Event handler
+  * @param {object} data
+  * @param {object} event
+  */
+  handleItemClick(data, event) {
+    this.onRequestItem(data);
   }
 
-  handleMouseIn(data, event){
+  /**
+  * MouseEnter Event handler
+  * @param {object} data
+  * @param {object} event
+  */
+  handleMouseIn(data, event) {
     this.onRequestIn(data);
   }
 
-  handleMouseOut(data, event){
+  /**
+  * MouseLeave Event handler
+  * @param {object} data
+  * @param {object} event
+  */
+  handleMouseOut(data, event) {
     this.onRequestOut(data);
   }
 }
