@@ -3,9 +3,18 @@
 
   <section data-bind="visible: showMap()">
     <div id="google-map"></div>
-    <search-input params="fetching: fetching(), onRequestSubmit: onSubmitCallback, onRequestReset: onResetCallback, onRequestBack: onResponCallback, onErrorRequest: onErrorCallback"></search-input>
-    <results params="show: showResults(), results: results(), fetching: fetching(), onRequestItem: onItemCallback, onRequestIn: onItemMouseIn, onRequestOut: onItemMouseOut"></results>
+
+    <search-input params="fetching: fetching(), onRequestSubmit: onSubmitCallback,
+    onRequestReset: onResetCallback, onRequestBack: onSearchBackCallback,
+    onErrorRequest: onErrorCallback">
+    </search-input>
+
+    <results params="show: showResults(), results: results(), fetching: fetching(),
+    onRequestItem: onItemCallback, onRequestIn: onItemMouseIn, onRequestOut: onItemMouseOut">
+    </results>
+
     <item params="show: showItem(), place: place(), onRequestBack: onBackCallback"></item>
+    
     <fab params="className: 'fab-current', icon: 'my_location', onClick: handleRelocate"></fab>
   </section>
 
