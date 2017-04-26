@@ -38,10 +38,7 @@ class GoogleMapViewModel {
     this.mainMarker = null;
 
     // Loads the map and creates the mainMarker
-    mapSingleton.load(() => {
-      this.mainMarker = new google.maps.Marker({});
-      this.showMap(true);
-    });
+    mapSingleton.load(this.onMapLoadCallback.bind(this));
 
     // Binding callback functions
     this.onSubmitCallback = this.onSubmitCallback.bind(this);
@@ -125,6 +122,12 @@ class GoogleMapViewModel {
   handleRelocate() {
     this.fetching(true);
     mapSingleton.relocate(() => this.fetching(false), this.onErrorCallback);
+  }
+
+  onMapLoadCallback(){
+    this.mainMarker = new google.maps.Marker({});
+    this.showMap(true);
+    setTimeout(() => this.onSubmitCallback('pizza'), 500);
   }
 
   /**
