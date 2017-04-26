@@ -13,6 +13,7 @@ class ItemViewModel {
   * @param {object} place - The place details to display
   * @param {boolean} show - Whether to show the panel or not
   * @param {function} onRequestBack - The callback called when the back link
+  *
   * @member {boolean} over - whether user has scrolled over the cover image
   */
   constructor(params) {
