@@ -17,6 +17,9 @@ class ResultsViewModel {
   * @param {observableArray} results - The observableArray of results
   * @param {observable} fetching - Observable boolean
   * @param {observable} show - Observable boolean
+  *
+  * @member {observable} filterText
+  * @member {computed} filterItems
   */
   constructor(params) {
     this.onRequestItem = params.onRequestItem;
@@ -27,28 +30,33 @@ class ResultsViewModel {
     this.show = params.show;
 
     this.filterText = ko.observable('');
-    this.filterItems = ko.computed( () => {
-      var filter = this.filterText().toLowerCase();
-      if (!filter) {
-        this.results().forEach((place) => place.showMarker());
-        return this.results();
-      } else {
-        return ko.utils.arrayFilter(this.results(), (place) => {
-          if (ko.utils.stringStartsWith(place.name.toLowerCase(), filter)) {
-            place.showMarker();
-            return true;
-          } else {
-            place.hideMarker();
-            return false;
-          }
-        });
-      }
-    });
-    
+    this.filterItems = ko.computed(this.filterResults.bind(this));
+
     // Binding event functions
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
+  }
+
+  /**
+  * Filters the current results and hides there markers
+  */
+  filterResults(){
+    var filter = this.filterText().toLowerCase();
+    if (!filter) {
+      this.results().forEach((place) => place.showMarker());
+      return this.results();
+    } else {
+      return ko.utils.arrayFilter(this.results(), (place) => {
+        if (ko.utils.stringStartsWith(place.name.toLowerCase(), filter)) {
+          place.showMarker();
+          return true;
+        } else {
+          place.hideMarker();
+          return false;
+        }
+      });
+    }
   }
 
   /**
