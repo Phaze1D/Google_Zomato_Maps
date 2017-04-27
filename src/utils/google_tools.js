@@ -1,7 +1,6 @@
 import { mapSingleton } from 'utils/map';
+import Place from 'models/place';
 
-const DEFAULT_THUMB = 'https://maps.gstatic.com/tactile/omnibox/list-result-no-thumbnail-1x.png';
-const DEFAULT_COVER = 'https://maps.gstatic.com/tactile/pane/default_geocode-2x.png';
 
 /**
 * Functions that calls the Google Auto Complete API
@@ -43,7 +42,7 @@ export let googleSearchAPI = function (query, success, failed) {
   service.nearbySearch(params, (results, status) => {
     if (status === 'OK' || status === 'ZERO_RESULTS') {
       results = results ? results : [];
-      success(formatResults(results));
+      success(results.map((result) => Place.placeFromGoogle(result)));
     } else {
       status = status.replace('_', ' ');
       failed(status);
@@ -62,7 +61,7 @@ export let googleDetailAPI = function (id, success, failed) {
   let service = new google.maps.places.PlacesService(mapSingleton.getMap());
   service.getDetails(params, (place, status) => {
     if (status === 'OK') {
-      success(formatPlace(place));
+      success(Place.placeFromGoogle(place));
     } else {
       status = status.replace('_', ' ');
       failed(status);
@@ -86,58 +85,4 @@ export let googleGeoCoder = function (address, success, failed) {
       failed(status);
     }
   });
-}
-
-/**
-* Formats the results from the google's search api call so that it can be used
-* in the ResultViewModel
-* @param {array} results - The googles search api results
-* @return {array} A formated results array
-*/
-let formatResults = function (results) {
-  let formated = results.map( (result) => {
-    return {
-      id: result.place_id,
-      name: result.name,
-      rating: result.rating,
-      type: result.types ? result.types[0].replace("_", " ") : '',
-      address: result.vicinity,
-      geometry: result.geometry,
-      open: result.opening_hours ? result.opening_hours.open_now : false,
-      thumb: result.photos ? result.photos[0].getUrl({'maxWidth': 160}) : DEFAULT_THUMB
-    }
-  });
-  return formated;
-}
-
-/**
-* Formats the result from the google's place api call so that it can be used
-* in the ItemViewModel
-* @param {object} result - The googles place api result
-* @return {object} A formated result
-*/
-let formatPlace = function (result) {
-  let place =  {
-    id: result.place_id,
-    name: result.name,
-    rating: result.rating,
-    type: result.types ? result.types[0].replace("_", " ") : '',
-    address: result.vicinity,
-    phone: result.phone_number,
-    geometry: result.geometry,
-    open: result.opening_hours ? result.opening_hours.open_now : false,
-    cover: result.photos ? result.photos[0].getUrl({'maxWidth': 400}) : DEFAULT_COVER
-  };
-
-  if (result.rating > 0 && result.reviews) {
-    place.reviews = result.reviews.map((review) => {
-      return {
-        author_name: review.author_name,
-        rating: review.rating,
-        text: review.text
-      }
-    });
-  }
-
-  return place;
 }
