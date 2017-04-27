@@ -27,7 +27,7 @@ export default class Place {
         icon: {
           url: 'https://developers.google.com/maps/documentation/javascript/images/circle.png',
           anchor: new google.maps.Point(5, 5),
-          scaledSize: new google.maps.Size(10, 17)
+          scaledSize: new google.maps.Size(12, 20)
         }
       });
 
