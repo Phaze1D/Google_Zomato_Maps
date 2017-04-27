@@ -5,8 +5,7 @@
     <div id="google-map"></div>
 
     <search-input params="fetching: fetching(), onRequestSubmit: onSubmitCallback,
-    onRequestReset: onResetCallback, onRequestBack: onSearchBackCallback,
-    onErrorRequest: onErrorCallback">
+    onRequestReset: onResetCallback, onErrorRequest: onErrorCallback">
     </search-input>
 
     <results params="show: showResults(), results: results(), fetching: fetching(),
@@ -14,8 +13,12 @@
     </results>
 
     <item params="show: showItem(), place: place(), onRequestBack: onBackCallback"></item>
-    
+
     <fab params="className: 'fab-current', icon: 'my_location', onClick: handleRelocate"></fab>
+
+    <button id="show-lists" type="button" data-bind="attr: {class: type() ? 'google' : 'yelp'}, click: handleResponiveResults">
+      Toggle
+    </button>
   </section>
 
   <div id="error-box" data-bind="attr: {class: error().length > 0 ? 'show' : ''}">

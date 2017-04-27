@@ -36,7 +36,7 @@ class GoogleMapViewModel {
     this.mainMarker = null;
 
     // Loads the map and creates the mainMarker
-    mapSingleton.load(this.onMapLoadCallback.bind(this));
+    mapSingleton.load(this.onMapLoadCallback.bind(this), this.onErrorCallback);
 
     // Binding callback functions
     this.onSubmitCallback = this.onSubmitCallback.bind(this);
@@ -102,7 +102,17 @@ class GoogleMapViewModel {
     mapSingleton.relocate(() => this.fetching(false), this.onErrorCallback);
   }
 
-  onMapLoadCallback(){
+  handleResponiveResults() {
+    this.hideMainMarker();
+    this.showResults( !(this.showResults() || this.showItem()) );
+    this.showItemPanel(false);
+  }
+
+  /**
+  * Called when google maps loads
+  * @callback
+  */
+  onMapLoadCallback() {
     this.mainMarker = new google.maps.Marker({});
     this.showMap(true);
     setTimeout(() => this.onSubmitCallback('pizza'), 500);
@@ -175,7 +185,9 @@ class GoogleMapViewModel {
     }
     this.showMainMarker(item.geometry.location);
     this.mainMarker.setAnimation(google.maps.Animation.BOUNCE);
+    mapSingleton.getMap().panTo(item.geometry.location);
     this.fetching(true);
+
   }
 
   /**

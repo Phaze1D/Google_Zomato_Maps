@@ -14,6 +14,35 @@
   right: 16px
   background-color: white
 
+#show-lists
+  position: absolute
+  bottom: 0
+  left: 50%
+  width: 200px
+  height: 50px
+  color: white
+  font-size: 20px
+  text-align: center
+  display: none
+  border: none
+  border-radius: 3px 3px 0 0
+  font-family: Roboto,Arial,sans-serif
+  font-weight: 300
+  box-shadow: 0 0 2px rgba(0,0,0,.12), 0 0 4px rgba(0,0,0,.24)
+  transform: translateX(-50%)
+  cursor: pointer
+  outline: none
+
+  &.google
+    background-color: #4285F4
+
+  &.yelp
+    background-color: #d32323
+
+
+  @media screen and (max-width: 751px)
+    display: block
+
 
 #google-map
   height: 100%
@@ -30,7 +59,7 @@
   position: absolute
   bottom: 0
   left: 50%
-  transform: translate(-50%, 100%)
+  transform: translate(-50%, 110%)
   transition: 0.3s
   box-shadow: 0 0 2px rgba(0,0,0,.12), 0 0 4px rgba(0,0,0,.24)
 
