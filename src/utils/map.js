@@ -1,4 +1,4 @@
-import GoogleMapsLoader from 'google-maps'
+import GoogleMapsApiLoader from 'google-maps-api-loader'
 
 /** Class that represents single google map */
 class MapSingleton {
@@ -11,8 +11,6 @@ class MapSingleton {
   constructor() {
     this.map = null;
     this.geocoder = null;
-    GoogleMapsLoader.KEY = 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg';
-    GoogleMapsLoader.LIBRARIES = ['places'];
   }
 
   /**
@@ -20,9 +18,17 @@ class MapSingleton {
   * @param {function} onRequestLoad - Callback for successful load
   * @param {function} onRequestError - Callback for failed load
   */
-  load(onRequestLoad) {
-    this.onRequestLoad = onRequestLoad;
-    GoogleMapsLoader.load(this.__initMap.bind(this));
+  load(success, failed) {
+    GoogleMapsApiLoader({
+        libraries: ['places'],
+        apiKey: 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg'
+    })
+    .then((googleApi) => {
+      this.__initMap(googleApi);
+      success();
+    }, (err) => {
+      failed(err.toString());
+    });
   }
 
   /**
@@ -31,7 +37,6 @@ class MapSingleton {
   * @param {object} pos - The maps init center position
   */
   __initMap(google) {
-    this.onRequestLoad();
     this.geocoder = new google.maps.Geocoder();
     this.map = new google.maps.Map(document.getElementById('google-map'), {
       center: {lat: 37.425713 , lng: -122.1703695},

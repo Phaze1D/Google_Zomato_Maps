@@ -20,7 +20,7 @@
   "homepage": "https://github.com/Phaze1D/Google-Maps-Replica#readme",
   "dependencies": {
     "axios": "^0.16.1",
-    "google-maps": "^3.2.1",
+    "google-maps-api-loader": "^0.3.0",
     "knockout": "^3.4.2"
   },
   "devDependencies": {
