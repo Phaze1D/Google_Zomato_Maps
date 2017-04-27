@@ -30,7 +30,6 @@ class SearchViewModel {
   constructor(params) {
     this.onRequestSubmit = params.onRequestSubmit;
     this.onRequestReset = params.onRequestReset;
-    this.onRequestBack = params.onRequestBack;
     this.onRequestError = params.onRequestError;
     this.fetching = params.fetching;
 
@@ -38,12 +37,10 @@ class SearchViewModel {
     this.showHolder = ko.observable(false);
     this.showClear = ko.observable(true);
     this.showAuto = ko.observable(false);
-    this.responsive = ko.observable(false);
     this.searchValue = ko.observable("pizza");
 
     // Binding event handlers
     this.handleInputChanged = this.handleInputChanged.bind(this);
-    this.handleResize = this.handleResize.bind(this);
     this.onItemCallback = this.onItemCallback.bind(this);
     this.onAutoCallback = this.onAutoCallback.bind(this);
 
@@ -54,8 +51,6 @@ class SearchViewModel {
     // subscribing to searchValue
     this.searchValue.subscribe(this.handleInputChanged);
 
-    // Add resize event handler
-    window.addEventListener('resize',this.handleResize);
   }
 
   /**
@@ -127,28 +122,12 @@ class SearchViewModel {
   }
 
   /**
-  * Resize Event Handler
-  * Sets whether the search bar should be responsive or not
-  */
-  handleResize() {
-    if (window.innerWidth < 751 && !this.responsive() && this.didSubmit) {
-      this.responsive(true);
-    } else if (window.innerWidth > 751 && this.responsive()) {
-      this.responsive(false);
-    }
-  }
-
-  /**
   * Click Event Handler
   * Handles the flip type and the back button press
   */
   handleFlip(root) {
-    if (this.responsive()) {
-      this.onRequestBack();
-    } else {
-      root.type(!root.type());
-      this.showClear(false);
-    }
+    root.type(!root.type());
+    this.showClear(false);
   }
 
   /**
@@ -204,16 +183,11 @@ class SearchViewModel {
       var value = ref ? ref : this.convertValue(this.searchValue());
       this.onRequestSubmit(this.searchValue());
 
-      if (window.innerWidth < 751) {
-        this.responsive(true);
-      }
-
       if (createNew) {
         this.updateLocalStorage(value);
       }
 
     } else {
-      this.responsive(false);
       this.onRequestReset();
     }
   }
@@ -224,7 +198,6 @@ class SearchViewModel {
   * @param {object} event
   */
   handleReset(data, event) {
-    this.responsive(false);
     this.didSubmit = false;
     document.getElementById('search-input').blur();
     this.searchValue('');

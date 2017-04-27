@@ -1,15 +1,9 @@
 <div class="search-wrapper">
   <button class="search-button" type="button" data-bind="click: function() { $data.handleFlip($parents[$parents.length - 2]) }">
-    <!--  ko if: responsive() -->
-      <i class="material-icons">arrow_backward</i>
-    <!-- /ko -->
-
-    <!--  ko if: !responsive() -->
     <div class="flipper" data-bind="style: {transform: $parents[$parents.length - 2].type() ? 'rotateY(0deg)' : 'rotateY(180deg)'}">
       <img class="front" src="https://i.stack.imgur.com/Ga0da.png" alt="google-logo">
       <img class="back" src="https://b.zmtcdn.com/images/logo/zomato.jpg" alt="yelp-logo">
     </div>
-    <!-- /ko -->
   </button>
 
   <div class="search-holder" data-bind="visible: showHolder()">
