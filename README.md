@@ -13,11 +13,15 @@ This app uses [npm](npmjs.com) for development. To install all the dependencies 
 $ npm install
 $ npm run dev
 ```
-The second command will run the webpack dev server so you can view the app locally at `localhost:8080`
+The second command will run the webpack dev server so you can view the app locally at `localhost:8080`. Any saved changes to the code should automatically refresh the page.
 
 
 ## Production
 To run the production build just open the `dist/index.html` file
+To rebuild the production code run
+```
+$ npm run production
+```
 
 
 
