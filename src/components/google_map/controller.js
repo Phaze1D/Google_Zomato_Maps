@@ -22,7 +22,6 @@ class GoogleMapViewModel {
   * @member {observable} error - String, the error string to display
   * @member {observable} place - Object, the selected place to show
   * @member {observable} results - Array, the results array
-  * @member {array} markers - The google markers to show
   * @member {marker} mainMarker - The main marker that has animation
   */
   constructor() {
@@ -34,7 +33,6 @@ class GoogleMapViewModel {
     this.error = ko.observable('');
     this.place = ko.observable();
     this.results = ko.observableArray();
-    this.markers = [];
     this.mainMarker = null;
 
     // Loads the map and creates the mainMarker
@@ -90,30 +88,10 @@ class GoogleMapViewModel {
   }
 
   /**
-  * Adds a marker to the map and the markers array, and adds an event listener
-  * to the marker.
-  * @param {object} place - The place object to be added
-  */
-  addMarker(place) {
-    let marker = new google.maps.Marker({
-      map: mapSingleton.getMap(),
-      position: place.geometry.location,
-      icon: {
-        url: 'https://developers.google.com/maps/documentation/javascript/images/circle.png',
-        anchor: new google.maps.Point(5, 5),
-        scaledSize: new google.maps.Size(10, 17)
-      }
-    });
-    google.maps.event.addListener(marker, 'click', () => this.onItemCallback(place));
-    this.markers.push(marker);
-  }
-
-  /**
   * Removes all markers from the map and resets the markers array
   */
   deleteMarkers() {
-    this.markers.forEach((marker) => marker.setMap(null));
-    this.markers = [];
+    this.results().forEach( (place) => place.hideMarker());
   }
 
   /**
@@ -222,23 +200,19 @@ class GoogleMapViewModel {
   * @callback googleSearchAPI, zomatoSearchAPI ~ success
   * @param {array} results - An array of place results
   */
-  onSearchCallback(results) {
+  onSearchCallback(places) {
     let bounds = new google.maps.LatLngBounds();
-    results.forEach((result) => {
-      // Some zomato results dont have lat/lng so if not get them via the google api
-      if (result.geometry.location.lat != 0 && result.geometry.location.lng != 0) {
-        this.addMarker(result);
-        bounds.extend(result.geometry.location);
-      } else {
-        googleGeoCoder(result.address, this.onGeoCallback, this.onErrorCallback);
-      }
+    places.forEach((place) => {
+      place.onRequestClick = this.onItemCallback;
+      place.createMarker();
+      bounds.extend(place.geometry.location);
     });
 
     // if results is not empty fit the map so should the markers
-    if(results.length > 0){
+    if (places.length > 0) {
       mapSingleton.getMap().fitBounds(bounds);
     }
-    ko.utils.arrayPushAll(this.results, results);
+    ko.utils.arrayPushAll(this.results, places);
     this.fetching(false);
     this.showResults(true);
     this.showItemPanel(false);
@@ -249,8 +223,8 @@ class GoogleMapViewModel {
   * @callback googleDetailAPI, zomatoDetailAPI ~ success
   * @param {object} detail - the detail object return from the api
   */
-  onDetailCallback(detail) {
-    this.place(detail);
+  onDetailCallback(place) {
+    this.place(place);
     this.showResults(false);
     this.showItemPanel(true);
     this.fetching(false);
