@@ -1,10 +1,11 @@
 .results-top
-  height: 62px
+  height: 113px
 
 .results-list
   overflow-y: scroll
   overflow-x: hidden
   max-height: calc(100% - 62px)
+  padding-bottom: 50px
 
 .results-item
   display: flex
@@ -58,6 +59,14 @@
   left: 50%
   transform: translateX(-50%)
 
+.filter
+  position: absolute
+  top: 58px
+  padding: 0 0 0 16px
+
+  .search-holder
+    left: 16px
+
 
 .yelp
   height: 100%
@@ -67,6 +76,6 @@
 
 .google
   height: 100%
-  
+
   .results-top
       background-color: #4285F4

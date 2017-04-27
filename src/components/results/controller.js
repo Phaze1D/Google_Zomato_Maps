@@ -1,3 +1,4 @@
+import ko from 'knockout';
 import { component } from 'utils/decorators';
 
 
@@ -25,6 +26,25 @@ class ResultsViewModel {
     this.fetching = params.fetching;
     this.show = params.show;
 
+    this.filterText = ko.observable('');
+    this.filterItems = ko.computed( () => {
+      var filter = this.filterText().toLowerCase();
+      if (!filter) {
+        this.results().forEach((place) => place.showMarker());
+        return this.results();
+      } else {
+        return ko.utils.arrayFilter(this.results(), (place) => {
+          if (ko.utils.stringStartsWith(place.name.toLowerCase(), filter)) {
+            place.showMarker();
+            return true;
+          } else {
+            place.hideMarker();
+            return false;
+          }
+        });
+      }
+    });
+    
     // Binding event functions
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
