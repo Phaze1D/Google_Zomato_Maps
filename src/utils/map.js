@@ -21,7 +21,7 @@ class MapSingleton {
   load(success, failed) {
     GoogleMapsApiLoader({
         libraries: ['places'],
-        apiKey: 'AIzaSyAjN_VCsrqtlCqyozjTV7L8z_JYMeYBKzg'
+        apiKey: 'AIzaSyByjXf_TKYNHIkFzN4oVOIuAwHGi8ZzXos'
     })
     .then((googleApi) => {
       this.__initMap(googleApi);
