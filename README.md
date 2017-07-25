@@ -1,7 +1,7 @@
 # Google Zomato Map
 > Udacity Frontend Nanodegree Project 7
 
-An app inspired by Google Maps thats uses [Google Map Javascript SDK](https://developers.google.com/maps/documentation/javascript/) and [Zomato API](https://developers.zomato.com/api) to display information about different locations. The user can switch between using Google's API or Zomato API. Since Zomato is a restaurant review website it will only work when searching for restaurant.
+An app inspired by Google Maps that uses [Google Map Javascript SDK](https://developers.google.com/maps/documentation/javascript/) and [Zomato API](https://developers.zomato.com/api) to display information about different locations. The user can switch between using Google's API or Zomato API. Since Zomato is a restaurant review website it will only work when searching for restaurants.
 
 You can view the live version [here](https://phaze1d.github.io/Google_Zomato_Maps/)
 
